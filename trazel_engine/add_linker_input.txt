@@ -1,0 +1,1 @@
+kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\glfw\lib-vc2022\glfw3.lib;C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\Lib\vulkan-1.lib

@@ -1,0 +1,31 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "client", "client\client.vcxproj", "{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "trazel_engine", "trazel_engine\trazel_engine.vcxproj", "{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Client|x64 = Client|x64
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Client|x64.ActiveCfg = Client|x64
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Client|x64.Build.0 = Client|x64
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Debug|x64.ActiveCfg = Debug|x64
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Debug|x64.Build.0 = Debug|x64
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Release|x64.ActiveCfg = Release|x64
+		{8461ABF6-7003-D6CC-59BE-E92045FF5C1D}.Release|x64.Build.0 = Release|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Client|x64.ActiveCfg = Client|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Client|x64.Build.0 = Client|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Debug|x64.ActiveCfg = Debug|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Debug|x64.Build.0 = Debug|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Release|x64.ActiveCfg = Release|x64
+		{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
