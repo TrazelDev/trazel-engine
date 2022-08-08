@@ -1,78 +1,60 @@
 #pragma once
 #include "pch.h"
-#include "vulkan_setup/instance/instance.h"
-#include "vulkan_setup/device/device.h"
-#include "vulkan_setup/device/swapchain.h"
-#include "vulkan_setup/pipeline/pipeline.h"
-#include "vulkan_setup/frameBuffer/frameBuffer.h"
-#include "vulkan_setup/commands/commands.h"
-#include "vulkan_setup/synchronization/sync.h"
 
+
+namespace tze
+{
 class windowsWindow
 {
 public:
 	windowsWindow(int Width = 1280, int Height = 720, const char* Title = "TRAZEL_ENGINE");
 	~windowsWindow();
-	void run();
+
+	struct windowProps
+	{
+
+		GLFWwindow* window;
+		uint32_t* width;
+		uint32_t* height;
+		const char* title;
+	};
+
+	windowProps* getWindowProps()
+	{
+		windowProps* thisWindowPros = new windowProps();
+		thisWindowPros->window = window;
+		thisWindowPros->width = &width;
+		thisWindowPros->height = &height;
+		thisWindowPros->title = title;
+		return thisWindowPros;
+	}
 
 private:
 	// the glfw window parameters:
+	GLFWwindow* window;
 	uint32_t width;
 	uint32_t height;
 	const char* title;
-	GLFWwindow* window;
-
-	// frames pramters:
-	double lastTime, currentTime;
-	int numFrames;
-	float frameTime;
-
-	// vulkan instance: 
-	vk::Instance instance{ nullptr };
-	vk::DebugUtilsMessengerEXT debugMessenger{ nullptr };
-	vk::DispatchLoaderDynamic dldi;
-
-	// device related variables:
-	vk::PhysicalDevice physicalDevice{ nullptr };
-	vk::Device device{ nullptr };
-	vk::Queue graphicsQueue{ nullptr };
-	vk::SurfaceKHR surface;
-	vk::Queue presentQueue;
-	vk::SwapchainKHR swapchain;
-	std::vector<vkUtil::SwapchainFrame> swapchainFrames;
-	vk::Format swapchainFormat;
-	vk::Extent2D swapchainExtent;
-
-	// pipeline related variables:
-	vk::PipelineLayout layout;
-	vk::RenderPass renderpass;
-	vk::Pipeline pipeline;
-
-	// command related variables:
-	vk::CommandPool commandPool;
-	vk::CommandBuffer commandBuffer;
-
-
-	//syncchoronzation related variables:
-	vk::Fence inFlightFence;
-	vk::Semaphore imageAvailable, renderFinished;
+	bool framebufferResized;
 
 	// creating glfw window
-	void windowsWindow::buildGLFWWindow(int width, int height);
+	void buildGLFWWindow(int width, int height);
 
-	// instance setup
-	void makeInstance();
+	// change window props:
+	bool wasWindowResized() { return framebufferResized; }
+	////void resetWindowResizedFlag() { framebufferResized = false; }
+	//static void framebufferResizedCallback(GLFWwindow* window, int width, int height);
+	//void recreateSwapChain();
+	//void recordCommendBuffer(int imageIndex);
 
-	// device setup
-	void makeDevice();
 
-	// pipeline setup
-	void makePipeline();
 
-	void finalSetup();
-
-	void recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
-
-	void render();
-	void calculateFrameRate();
+	// ImGui:
+	//ImGui_ImplVulkanH_Window mainWindowData;
+	// uint32_t g_QueueFamily = (uint32_t)-1;
+	//VkAllocationCallbacks* allocator;
+	//void createImGui();
+	//void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height);
+	//tze::imGuiLayer imGui;
 };
+}

@@ -1,6 +1,54 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="eventSystem">
+      <UniqueIdentifier>{EC900C8B-5846-8580-E13A-7F574DEF7B84}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers">
+      <UniqueIdentifier>{3588EB0A-212A-16E1-0AE5-2935F6259D31}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\imguiLayer">
+      <UniqueIdentifier>{FC63BEE2-687A-BC78-B1F1-479A1D478D00}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer">
+      <UniqueIdentifier>{C661D63D-B25A-F58F-DB8C-DA14C7E4D49B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup">
+      <UniqueIdentifier>{16E2FBAB-82FA-E2D5-4BA7-726FB77E776F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\DescriptorPool">
+      <UniqueIdentifier>{9E138EDB-8A26-8E34-3310-6B211F022B82}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\commands">
+      <UniqueIdentifier>{37D25E2A-2324-361A-0C43-732AF8334F03}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\device">
+      <UniqueIdentifier>{151FCD81-0106-8F79-AA56-F596961C08E0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\frameBuffer">
+      <UniqueIdentifier>{4A78B8DD-B692-1B7F-FFB4-2B136B0E4386}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\instance">
+      <UniqueIdentifier>{DA316D75-C683-4465-AFA2-81759B935D4E}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\pipeline">
+      <UniqueIdentifier>{1BDF4D62-0731-2552-F04F-6262DC403E3B}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\synchronization">
+      <UniqueIdentifier>{77B45192-E324-540B-AC43-CE9318738C0C}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\vulkan_logging">
+      <UniqueIdentifier>{DC071721-C81A-177A-7104-F4665DF6B3C7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_utility">
+      <UniqueIdentifier>{398FA256-A572-B196-AE75-DFD21AD877E7}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_utility\queueFamilies">
+      <UniqueIdentifier>{17B88C0A-8328-8F83-4C47-090CB876C784}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="layers\mainLayer\vulkan_utility\shaders">
+      <UniqueIdentifier>{3275A239-9E04-6424-A700-453C130F9F30}</UniqueIdentifier>
+    </Filter>
     <Filter Include="trazel_engine">
       <UniqueIdentifier>{4CD7E9CA-B897-6501-81D2-AE7EED51AADD}</UniqueIdentifier>
     </Filter>
@@ -16,50 +64,65 @@
     <Filter Include="window\a-Not_in_use\windows\graphics">
       <UniqueIdentifier>{670DDC36-53F4-9D2E-FC44-044CE80A1795}</UniqueIdentifier>
     </Filter>
-    <Filter Include="window\inputs">
-      <UniqueIdentifier>{2F5864BB-9B18-E0F1-6453-296FD0D224CE}</UniqueIdentifier>
-    </Filter>
     <Filter Include="window\mac_linux">
       <UniqueIdentifier>{6C223E97-581B-5DE9-814D-426E6DA53CF5}</UniqueIdentifier>
     </Filter>
     <Filter Include="window\windows">
       <UniqueIdentifier>{B74DC751-A31B-BB57-8CAF-2B7E781C97BC}</UniqueIdentifier>
     </Filter>
-    <Filter Include="window\windows\vulkan_setup">
-      <UniqueIdentifier>{A7ED4862-13FB-7648-9CE1-723308EE42FF}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\commands">
-      <UniqueIdentifier>{E8708405-D457-46FD-7DA8-AC1A696EBF63}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\device">
-      <UniqueIdentifier>{865DE924-7299-EC8E-DBAB-0486C70695A9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\frameBuffer">
-      <UniqueIdentifier>{5B65C279-C7F4-8364-D0F0-647C3CFFBE70}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\instance">
-      <UniqueIdentifier>{8BD09250-77B7-5448-2008-BB650CCECDAE}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\pipeline">
-      <UniqueIdentifier>{CC7D733D-B864-3535-61B5-9B524D7BAE9B}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\synchronization">
-      <UniqueIdentifier>{08C2BDCC-7427-5153-FDFF-F22B696446C2}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_setup\vulkan_logging">
-      <UniqueIdentifier>{4D277FAE-398F-457C-A2FA-59928E815C68}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_utility">
-      <UniqueIdentifier>{0AC360D4-76DB-47FE-3F88-D797AB5FDC97}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_utility\queueFamilies">
-      <UniqueIdentifier>{A8C5F844-142B-8CCB-9D03-2EA40968813A}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="window\windows\vulkan_utility\shaders">
-      <UniqueIdentifier>{03EA7B79-6FAE-7A69-3814-AB33A497169F}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="src\eventSystem\keyboard.h">
+      <Filter>eventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\eventSystem\mouse.h">
+      <Filter>eventSystem</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\imguiLayer\imguiLayer.h">
+      <Filter>layers\imguiLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\layer.h">
+      <Filter>layers</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\mainLyaer.h">
+      <Filter>layers\mainLayer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\DescriptorPool\DescriptorPool.h">
+      <Filter>layers\mainLayer\vulkan_setup\DescriptorPool</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\commands\commands.h">
+      <Filter>layers\mainLayer\vulkan_setup\commands</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\device\device.h">
+      <Filter>layers\mainLayer\vulkan_setup\device</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\device\swapchain.h">
+      <Filter>layers\mainLayer\vulkan_setup\device</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.h">
+      <Filter>layers\mainLayer\vulkan_setup\frameBuffer</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\instance\instance.h">
+      <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.h">
+      <Filter>layers\mainLayer\vulkan_setup\pipeline</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.h">
+      <Filter>layers\mainLayer\vulkan_setup\synchronization</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.h">
+      <Filter>layers\mainLayer\vulkan_setup\vulkan_logging</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_utility\frame.h">
+      <Filter>layers\mainLayer\vulkan_utility</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_utility\queueFamilies\queueFamilies.h">
+      <Filter>layers\mainLayer\vulkan_utility\queueFamilies</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_utility\shaders\shaders.h">
+      <Filter>layers\mainLayer\vulkan_utility\shaders</Filter>
+    </ClInclude>
     <ClInclude Include="src\pch.h" />
     <ClInclude Include="src\trazel_engine.h" />
     <ClInclude Include="src\trazel_engine\app.h">
@@ -80,53 +143,59 @@
     <ClInclude Include="src\window\a-Not_in_use\windows\graphics\graphics.h">
       <Filter>window\a-Not_in_use\windows\graphics</Filter>
     </ClInclude>
-    <ClInclude Include="src\window\inputs\keyboard.h">
-      <Filter>window\inputs</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\inputs\mouse.h">
-      <Filter>window\inputs</Filter>
-    </ClInclude>
     <ClInclude Include="src\window\mac_linux\mac_linux.h">
       <Filter>window\mac_linux</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\commands\commands.h">
-      <Filter>window\windows\vulkan_setup\commands</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\device\device.h">
-      <Filter>window\windows\vulkan_setup\device</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\device\swapchain.h">
-      <Filter>window\windows\vulkan_setup\device</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\frameBuffer\frameBuffer.h">
-      <Filter>window\windows\vulkan_setup\frameBuffer</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\instance\instance.h">
-      <Filter>window\windows\vulkan_setup\instance</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\pipeline\pipeline.h">
-      <Filter>window\windows\vulkan_setup\pipeline</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\synchronization\sync.h">
-      <Filter>window\windows\vulkan_setup\synchronization</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_setup\vulkan_logging\vulkan_logging.h">
-      <Filter>window\windows\vulkan_setup\vulkan_logging</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_utility\frame.h">
-      <Filter>window\windows\vulkan_utility</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_utility\queueFamilies\queueFamilies.h">
-      <Filter>window\windows\vulkan_utility\queueFamilies</Filter>
-    </ClInclude>
-    <ClInclude Include="src\window\windows\vulkan_utility\shaders\shaders.h">
-      <Filter>window\windows\vulkan_utility\shaders</Filter>
     </ClInclude>
     <ClInclude Include="src\window\windows\windowsWindow.h">
       <Filter>window\windows</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\eventSystem\keyboard.cpp">
+      <Filter>eventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\eventSystem\mouse.cpp">
+      <Filter>eventSystem</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\imguiLayer\imguiLayer.cpp">
+      <Filter>layers\imguiLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\mainLyaer.cpp">
+      <Filter>layers\mainLayer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\DescriptorPool\DescriptorPool.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\DescriptorPool</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\commands\commands.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\commands</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\device\device.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\device</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\device\swapchain.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\device</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\frameBuffer</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\instance\instance.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\pipeline</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\synchronization</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\vulkan_logging</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_utility\queueFamilies\queueFamilies.cpp">
+      <Filter>layers\mainLayer\vulkan_utility\queueFamilies</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_utility\shaders\shaders.cpp">
+      <Filter>layers\mainLayer\vulkan_utility\shaders</Filter>
+    </ClCompile>
     <ClCompile Include="src\pch.cpp" />
     <ClCompile Include="src\trazel_engine\app.cpp">
       <Filter>trazel_engine</Filter>
@@ -140,44 +209,8 @@
     <ClCompile Include="src\window\a-Not_in_use\windows\windowsWindow.cpp">
       <Filter>window\a-Not_in_use\windows</Filter>
     </ClCompile>
-    <ClCompile Include="src\window\inputs\keyboard.cpp">
-      <Filter>window\inputs</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\inputs\mouse.cpp">
-      <Filter>window\inputs</Filter>
-    </ClCompile>
     <ClCompile Include="src\window\mac_linux\mac_linux.cpp">
       <Filter>window\mac_linux</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\commands\commands.cpp">
-      <Filter>window\windows\vulkan_setup\commands</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\device\device.cpp">
-      <Filter>window\windows\vulkan_setup\device</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\device\swapchain.cpp">
-      <Filter>window\windows\vulkan_setup\device</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\frameBuffer\frameBuffer.cpp">
-      <Filter>window\windows\vulkan_setup\frameBuffer</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\instance\instance.cpp">
-      <Filter>window\windows\vulkan_setup\instance</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\pipeline\pipeline.cpp">
-      <Filter>window\windows\vulkan_setup\pipeline</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\synchronization\sync.cpp">
-      <Filter>window\windows\vulkan_setup\synchronization</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_setup\vulkan_logging\vulkan_logging.cpp">
-      <Filter>window\windows\vulkan_setup\vulkan_logging</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_utility\queueFamilies\queueFamilies.cpp">
-      <Filter>window\windows\vulkan_utility\queueFamilies</Filter>
-    </ClCompile>
-    <ClCompile Include="src\window\windows\vulkan_utility\shaders\shaders.cpp">
-      <Filter>window\windows\vulkan_utility\shaders</Filter>
     </ClCompile>
     <ClCompile Include="src\window\windows\windowsWindow.cpp">
       <Filter>window\windows</Filter>

@@ -37,7 +37,13 @@ project "trazel_engine"
         "%{prj.name}/3d_party_extentions/glfw/include/GLFW",
         "%{prj.name}/3d_party_extentions/vulkan_sdk/Include",
         "%{prj.name}/3d_party_extentions/imgui",
-        "%{prj.name}/src"
+        "%{prj.name}/src",
+        "imGui",
+        "imGui/backends"
+    }
+
+    links {
+        "imGui"
     }
 
     filter "system:windows"
@@ -60,7 +66,6 @@ project "trazel_engine"
         symbols "On"
     
     filter "configurations:Release"
-        defines "DEBUG_MODE"
         defines "REALSE_MODE"
         optimize "On"
 
@@ -84,15 +89,15 @@ project "client"
     }
 
     includedirs {
-        includedirs {
-            "trazel_engine/3d_party_extentions",
-            "trazel_engine/3d_party_extentions/spdlog/include",
-            "trazel_engine/3d_party_extentions/spdlog",
-            "trazel_engine/3d_party_extentions/glfw",
-            "trazel_engine/3d_party_extentions/glfw/include/GLFW",
-            "trazel_engine/3d_party_extentions/vulkan_sdk/Include",
-            "trazel_engine/src"
-        }
+        "trazel_engine/3d_party_extentions",
+        "trazel_engine/3d_party_extentions/spdlog/include",
+        "trazel_engine/3d_party_extentions/spdlog",
+        "trazel_engine/3d_party_extentions/glfw",
+        "trazel_engine/3d_party_extentions/glfw/include/GLFW",
+        "trazel_engine/3d_party_extentions/vulkan_sdk/Include",
+        "trazel_engine/src",
+        "imGui",
+        "imGui/backends"
     }
 
     links {
@@ -122,3 +127,59 @@ project "client"
         kind "WindowedApp"
         defines "Client_MODE"
         symbols "On"
+
+project "imGui"
+    location "trazel_engine"
+    kind "StaticLib"
+    language "C++"
+
+    targetdir ("bin/" .. output_dir .. "/%{prj.name}")
+    objdir ("bin-int/" .. output_dir .. "/%{prj.name}")
+
+    files {
+        "%{prj.name}/**.h",
+        "%{prj.name}/**.cpp"
+    }
+
+    removefiles {"%{prj.name}/misc/freetype/imgui_freetype.cpp", "%{prj.name}/misc/freetype/imgui_freetype.h"}
+
+    includedirs {
+        "%{prj.name}",
+        "%{prj.name}/backends",
+        "trazel_engine/3d_party_extentions",
+        "trazel_engine/3d_party_extentions/spdlog/include",
+        "trazel_engine/3d_party_extentions/spdlog",
+        "trazel_engine/3d_party_extentions/glfw",
+        "trazel_engine/3d_party_extentions/glfw/include",
+        "trazel_engine/3d_party_extentions/glfw/include/GLFW",
+        "trazel_engine/3d_party_extentions/vulkan_sdk/Include",
+        "trazel_engine/3d_party_extentions/imgui",
+        "trazel_engine/src"
+    }
+
+    filter "system:windows"
+        cppdialect "C++17"
+        staticruntime "off"
+        runtime "Debug"
+        systemversion "latest"
+
+        defines {
+            "TZE_PLATFORM_WINDOWS",
+        }
+
+        postbuildcommands {
+            ("{COPY} %{cfg.buildtarget.relpath} ../bin/" .. output_dir .. "/client")
+        }
+
+    filter "configurations:Debug"
+        defines "DEBUG_MODE"
+        symbols "On"
+    
+    filter "configurations:Release"
+        defines "DEBUG_MODE"
+        defines "REALSE_MODE"
+        optimize "On"
+
+    filter "configurations:Client"
+        defines "Client_MODE"
+        optimize "On"

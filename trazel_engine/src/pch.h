@@ -3,9 +3,9 @@
 // window things:
 #define GLFW_INCLUDE_VULKAN
 #define VK_VERSION_1_0 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_vulkan.h>
-#include <imgui/imgui_impl_glfw.h>
+#include <imgui.h>
+#include <imgui_impl_vulkan.h>
+#include <imgui_impl_glfw.h>
 #include <glfw3.h>
 #include <glfw3native.h>
 #include <vulkan/vulkan.hpp>

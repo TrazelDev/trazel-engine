@@ -1,6 +1,6 @@
 #pragma once
-#include "../../inputs/keyboard.h"
-#include "../../inputs/mouse.h"
+#include "eventSystem/keyboard.h"
+#include "eventSystem/mouse.h"
 #include "graphics/graphics.h"
 
 namespace tze {

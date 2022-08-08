@@ -3020,7 +3020,7 @@ typedef struct VkSubmitInfo {
     const VkSemaphore*             pWaitSemaphores;
     const VkPipelineStageFlags*    pWaitDstStageMask;
     uint32_t                       commandBufferCount;
-    const VkCommandBuffer*         pCommandBuffers;
+    VkCommandBuffer*         pCommandBuffers;
     uint32_t                       signalSemaphoreCount;
     const VkSemaphore*             pSignalSemaphores;
 } VkSubmitInfo;

@@ -2,6 +2,8 @@
 #include "core.h"
 #include "log.h"
 #include "../window/windows/windowsWindow.h"
+#include "layers/mainLayer/mainLyaer.h"
+#include "layers/imguiLayer/imguiLayer.h"
 
 namespace tze
 {
@@ -14,9 +16,16 @@ namespace tze
 		virtual ~app();
 
 		void run();
+	private:
+		GLFWwindow* window;
+
+		mainLyaer* majorLay;
+		imguiLayer* imguiLay;
 	};
 
 	// this will be defiend in the client 
 	app* createApp();
+
+
 }
 
