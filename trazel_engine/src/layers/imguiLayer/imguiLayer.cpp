@@ -446,6 +446,52 @@ void imguiLayer::onUpdate()
 
 }
 
+/*
+void AddTriangles(const ImVec2* points, const int points_count, ImU32 col) {
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+
+
+    const ImVec2 uv = drawList->_Data->TexUvWhitePixel;
+
+    // Non Anti-aliased Fill
+    const int idx_count = (points_count - 2) * 3;
+    const int vtx_count = points_count;
+    drawList->PrimReserve(idx_count, vtx_count);
+    for (int i = 0; i < vtx_count; i++)
+    {
+        drawList->_VtxWritePtr[0].pos = points[i];
+        drawList->_VtxWritePtr[0].uv = uv;
+        drawList->_VtxWritePtr[0].col = col;
+        drawList->_VtxWritePtr++;
+    }
+    for (int i = 2; i < points_count; i++)
+    {
+        drawList->_IdxWritePtr[0] = (ImDrawIdx)(drawList->_VtxCurrentIdx);
+        drawList->_IdxWritePtr[1] = (ImDrawIdx)(drawList->_VtxCurrentIdx + i - 1);
+        drawList->_IdxWritePtr[2] = (ImDrawIdx)(drawList->_VtxCurrentIdx + i);
+        drawList->_IdxWritePtr += 3;
+    }
+    drawList->_VtxCurrentIdx += (ImDrawIdx)vtx_count;
+}
+
+void ofApp::draw()
+{
+    gui.begin();
+    //ImGuiStyle style = ImGui::GetStyle();
+    //style.AntiAliasedFill = false;
+    //style.AntiAliasedLines = false;
+    ImGui::Begin("Triangles test");
+    std::vector<ImVec2> points{
+        ImVec2(200, 200), ImVec2(200, 500), ImVec2(500, 500)
+    };
+    AddTriangles(points.data(), points.size(), ImColor(255, 255, 255, 255));
+    ImDrawList* drawList = ImGui::GetWindowDrawList();
+    drawList->AddConvexPolyFilled(points.data(), points.size(), ImColor(255, 0, 0, 128));
+    ImGui::End();
+    gui.end();
+}
+*/
+
 void imguiLayer::onAttach()
 {
     /*

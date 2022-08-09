@@ -100,7 +100,7 @@ vk::Instance vkInit::make_instance(const char* title)
 	const char** glfwExtentions = glfwGetRequiredInstanceExtensions(&glfwExtentionCount);
 
 	std::vector<const char*> extentions(glfwExtentions, glfwExtentions + glfwExtentionCount);
-	#ifdef DEBUG_MODE
+	#ifndef Client_MODE
 	extentions.push_back("VK_EXT_debug_utils");
 	#endif
 
@@ -112,7 +112,7 @@ vk::Instance vkInit::make_instance(const char* title)
 	}
 	#endif
 	std::vector <const char*> layers;
-	#ifdef DEBUG_MODE
+	#ifndef Client_MODE
 	layers.push_back("VK_LAYER_KHRONOS_validation");
 	#endif
 

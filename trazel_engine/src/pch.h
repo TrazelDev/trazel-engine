@@ -33,7 +33,6 @@
 
 
 #ifdef TZE_PLATFORM_WINDOWS
-	
 	#define _WIN32_WINNT 0x0601
 	#include <sdkddkver.h>
 	// this defines remove some unused windows things:

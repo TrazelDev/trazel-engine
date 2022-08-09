@@ -3,9 +3,7 @@
 #pragma comment(lib, "d3d11.lib")
 #pragma comment(lib, "D3DCompiler.lib")
 
-#ifdef DEBUG_MODE
-	#define CHECK_GRAPHICS_ERR(hrcall, sDesc, fDesc) if(FAILED(hrcall)) {TZE_ENGINE_ERR(fDesc);} else if(sDesc == "") {} else {TZE_ENGINE_INFO(sDesc);}
-#elif REALSE_MODE
+#ifndef Client_MODE
 	#define CHECK_GRAPHICS_ERR(hrcall, sDesc, fDesc) if(FAILED(hrcall)) {TZE_ENGINE_ERR(fDesc);} else if(sDesc == "") {} else {TZE_ENGINE_INFO(sDesc);}
 #else
 	#define CHECK_GRAPHICS_ERR(hrcall, sDesc, fDesc) hrcall

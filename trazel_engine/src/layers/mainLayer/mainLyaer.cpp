@@ -13,9 +13,6 @@ mainLyaer::~mainLyaer()
 {
 	device.waitIdle();
 
-	device.destroyFence(inFlightFence);
-	device.destroySemaphore(imageAvailable);
-	device.destroySemaphore(renderFinished);
 
 	device.destroyCommandPool(commandPool);
 
@@ -27,16 +24,21 @@ mainLyaer::~mainLyaer()
 	{
 		device.destroyImageView(frame.imageView);
 		device.destroyFramebuffer(frame.frameBuffer);
+		device.destroyFence(frame.inFlight);
+		device.destroySemaphore(frame.imageAvailable);
+		device.destroySemaphore(frame.renderFinished);
 	}
 
 	device.destroySwapchainKHR();
+	//device.destroyDescriptorPool();
 	device.destroy();
 
 	instance.destroySurfaceKHR(surface);
 
-#ifdef DEBUG_MODE
+#ifndef Client_MODE
 	instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
 #endif
+
 
 	instance.destroy();
 }
@@ -56,22 +58,22 @@ void mainLyaer::makeInstance()
 	instance = vkInit::make_instance(title);
 	dldi = vk::DispatchLoaderDynamic(instance, vkGetInstanceProcAddr);
 
-#ifdef DEBUG_MODE
+	#ifndef Client_MODE
 	debugMessenger = vkInit::make_debug_messenger(instance, dldi);
-#endif
+	#endif
 
 	VkSurfaceKHR c_stayle_surface;
 	if (glfwCreateWindowSurface(instance, window, nullptr, &c_stayle_surface) != VK_SUCCESS)
 	{
-#ifdef DEBUG_MODE
+		#ifndef Client_MODE
 		TZE_ENGINE_ERR("failed to abstract the glfw surface for Vulkan.\n");
-#endif
+		#endif
 	}
 	else
 	{
-#ifdef DEBUG_MODE
-		TZE_ENGINE_INFO("Successfully to abstracted the glfw surface for Vulkan.\n");
-#endif
+		#ifndef Client_MODE
+		TZE_ENGINE_INFO("Successfully to abstracted the glfw surface for Vulkan.");
+		#endif
 	}
 
 	surface = c_stayle_surface;
@@ -91,6 +93,8 @@ void mainLyaer::makeDevice()
 	swapchainFrames = bundle.frames;
 	swapchainFormat = bundle.format;
 	swapchainExtent = bundle.extent;
+	maxFramesInFlight = int(swapchainFrames.size());
+	frameNum = 0;
 }
 
 
@@ -124,11 +128,13 @@ void mainLyaer::finalSetup()
 	vkInit::commandBufferInputChunk commandBufferInput = { device, commandPool, swapchainFrames };
 	commandBuffer = vkInit::make_command_buffers(commandBufferInput);
 
-	vkInit::createDescriptorPool(device, descriptorPool);
-
-	inFlightFence = vkInit::make_fence(device);
-	imageAvailable = vkInit::make_semaphore(device);
-	renderFinished = vkInit::make_semaphore(device);
+	//vkInit::createDescriptorPool(device, descriptorPool);
+	for (vkUtil::SwapchainFrame& frame : swapchainFrames)
+	{
+		frame.inFlight = vkInit::make_fence(device);
+		frame.imageAvailable = vkInit::make_semaphore(device);
+		frame.renderFinished = vkInit::make_semaphore(device);
+	}
 
 
 }
@@ -143,9 +149,9 @@ void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t ima
 	}
 	catch (vk::SystemError err)
 	{
-#ifdef DEBUG_MODE
+		#ifndef Client_MODE
 		TZE_ENGINE_ERR("failed to begin recording command buufer");
-#endif
+		#endif
 	}
 
 	vk::RenderPassBeginInfo renderpassInfo = {};
@@ -171,21 +177,21 @@ void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t ima
 	}
 	catch (vk::SystemError err)
 	{
-#ifdef DEBUG_MODE
+		#ifndef Client_MODE
 		TZE_ENGINE_ERR("failed to finish command buffer");
-#endif
+		#endif
 	}
 }
 
 
 void mainLyaer::render()
 {
-	device.waitForFences(1, &inFlightFence, VK_TRUE, UINT64_MAX);
-	device.resetFences(1, &inFlightFence);
+	device.waitForFences(1, &swapchainFrames[frameNum].inFlight, VK_TRUE, UINT64_MAX);
+	device.resetFences(1, &swapchainFrames[frameNum].inFlight);
 
-	uint32_t imageIndex{ device.acquireNextImageKHR(swapchain, UINT64_MAX, imageAvailable, nullptr).value };
+	uint32_t imageIndex{ device.acquireNextImageKHR(swapchain, UINT64_MAX, swapchainFrames[frameNum].imageAvailable, nullptr).value };
 
-	vk::CommandBuffer commandBuffer = swapchainFrames[imageIndex].commandBuffer;
+	vk::CommandBuffer commandBuffer = swapchainFrames[frameNum].commandBuffer;
 
 	commandBuffer.reset();
 
@@ -193,7 +199,7 @@ void mainLyaer::render()
 
 	vk::SubmitInfo submitInfo = {};
 
-	vk::Semaphore waitSemaphores[] = { imageAvailable };
+	vk::Semaphore waitSemaphores[] = { swapchainFrames[frameNum].imageAvailable };
 	vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
 	submitInfo.waitSemaphoreCount = 1;
 	submitInfo.pWaitSemaphores = waitSemaphores;
@@ -202,17 +208,17 @@ void mainLyaer::render()
 	submitInfo.commandBufferCount = 1;
 	submitInfo.pCommandBuffers = &commandBuffer;
 
-	vk::Semaphore signalSemaphores[] = { renderFinished };
+	vk::Semaphore signalSemaphores[] = { swapchainFrames[frameNum].renderFinished };
 	submitInfo.signalSemaphoreCount = 1;
 	submitInfo.pSignalSemaphores = signalSemaphores;
 
 	try {
-		graphicsQueue.submit(submitInfo, inFlightFence);
+		graphicsQueue.submit(submitInfo, swapchainFrames[frameNum].inFlight);
 	}
 	catch (vk::SystemError err) {
-#ifdef DEBUG_MODE
+		#ifndef Client_MODE
 		TZE_ENGINE_ERR("failed to submit draw command buffer!");
-#endif
+		#endif
 	}
 
 	vk::PresentInfoKHR presentInfo = {};
@@ -226,6 +232,8 @@ void mainLyaer::render()
 	presentInfo.pImageIndices = &imageIndex;
 
 	presentQueue.presentKHR(presentInfo);
+
+	frameNum = (frameNum + 1) % maxFramesInFlight;
 }
 
 
@@ -233,7 +241,6 @@ void mainLyaer::onUpdate()
 {	
 	render();
 	calculateFrameRate();
-	
 }
 
 

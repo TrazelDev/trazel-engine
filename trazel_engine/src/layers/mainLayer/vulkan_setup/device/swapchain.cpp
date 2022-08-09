@@ -204,3 +204,10 @@ vkInit::SwapchainBundle vkInit::create_swapchain(vk::Device& logicalDevice, vk::
 
 	return bundle;
 }
+
+void vkInit::recreate_swapchain(vk::Device& device, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height)
+{
+	vkDeviceWaitIdle(device);
+	create_swapchain(device, physicalDevice, surface, width, height);
+	
+}

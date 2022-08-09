@@ -2,22 +2,12 @@
 
 #ifdef TZE_PLATFORM_WINDOWS
 
-	#ifdef DEBUG_MODE
+	#ifndef Client_MODE
 		extern tze::app* tze::createApp();
 		int main(int argc, char** argv)
 		{
 			tze::log::init();
 			
-			tze::app* App = tze::createApp();
-			App->run();
-			delete App;
-		}
-	#elif REALSE_MODE
-		extern tze::app* tze::createApp();
-		int main(int argc, char** argv)
-		{
-			tze::log::init();
-
 			tze::app* App = tze::createApp();
 			App->run();
 			delete App;

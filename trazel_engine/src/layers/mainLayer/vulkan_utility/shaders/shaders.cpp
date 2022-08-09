@@ -5,10 +5,11 @@ std::vector<char> vkUtil::readFile(std::string filename)
 {
 	std::ifstream file(filename, std::ios::ate | std::ios::binary);
 
-	#ifdef DEBUG_MODE
+	#ifndef Client_MODE
 	if (!file.is_open())
 	{
-		std::cout << "failed to load \"" << filename << "\"" << std::endl;
+		std::string failedMsg = "failed to load \"" + filename + "\"";
+		TZE_ENGINE_ERR(failedMsg);
 	}
 	#endif
 	size_t filesize{ static_cast<size_t>(file.tellg()) };
@@ -36,8 +37,9 @@ vk::ShaderModule vkUtil::createModule(std::string filename, vk::Device device)
 	}
 	catch (vk::SystemError err)
 	{
-		#ifdef DEBUG_MODE
-		std::cout << "Failed to create shader module for \"" << filename << "\"" << std::endl;
+		#ifndef Client_MODE
+		std::string failedMsg = "Failed to create shader module for \"" + filename + "\"";
+		TZE_ENGINE_ERR(failedMsg);
 		#endif
 	}
 }

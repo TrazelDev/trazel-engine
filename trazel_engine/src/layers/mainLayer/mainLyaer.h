@@ -55,8 +55,7 @@ private:
 	VkDescriptorPool descriptorPool;
 
 	//syncchoronzation related variables:
-	vk::Fence inFlightFence;
-	vk::Semaphore imageAvailable, renderFinished;
+	int maxFramesInFlight, frameNum;
 
 	// instance setup
 	void makeInstance();

@@ -6,7 +6,6 @@ namespace tze
 windowsWindow::windowsWindow(int Width, int Height, const char* Title) : width(Width), height(Height), title(Title)
 {
 	buildGLFWWindow(width, height);
-	// imGui.onAttach(renderpass, instance, physicalDevice, device, graphicsQueue, commandPool, descriptorPool, window, surface, swapchain, pipeline, commandBuffer);
 }
 
 windowsWindow::~windowsWindow()
@@ -30,5 +29,4 @@ void windowsWindow::buildGLFWWindow(int width, int height)
 	//glfwSetWindowUserPointer(window, this);
 	//glfwSetFramebufferSizeCallback(window, framebufferResizedCallback);
 }
-
 }

@@ -57,7 +57,7 @@ vk::RenderPass vkInit::make_renderpass(vk::Device& device, vk::Format& swapchain
 	}
 	catch (vk::SystemError err)
 	{
-		#ifdef DEBUG_MODE
+		#ifdef Client_MODE
 		TZE_ENGINE_ERR("failed to create renderpass!");
 		#endif
 	}
@@ -207,7 +207,7 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 	}
 	catch (vk::SystemError)
 	{
-		#ifdef DEBUG_MODE
+		#ifndef Client_MODE
 		TZE_ENGINE_ERR("failed to create graphics pipeline!");
 		#endif
 	}
