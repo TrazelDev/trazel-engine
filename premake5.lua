@@ -39,7 +39,9 @@ project "trazel_engine"
         "%{prj.name}/3d_party_extentions/imgui",
         "%{prj.name}/src",
         "imGui",
-        "imGui/backends"
+        "imGui/backends",
+        "{prj.name}/3d_party_extentions/glm-master/glm/detail",
+        "{prj.name}/3d_party_extentions/glm-master/glm"
     }
 
     links {
@@ -97,7 +99,8 @@ project "client"
         "trazel_engine/3d_party_extentions/vulkan_sdk/Include",
         "trazel_engine/src",
         "imGui",
-        "imGui/backends"
+        "imGui/backends",
+        "trazel_engine/3d_party_extentions/glm-master/glm/detail"
     }
 
     links {
@@ -154,7 +157,9 @@ project "imGui"
         "trazel_engine/3d_party_extentions/glfw/include/GLFW",
         "trazel_engine/3d_party_extentions/vulkan_sdk/Include",
         "trazel_engine/3d_party_extentions/imgui",
-        "trazel_engine/src"
+        "trazel_engine/src",
+        "trazel_engine/3d_party_extentions/glm-master/glm/detail",
+        "trazel_engine/3d_party_extentions/glm-master/glm"
     }
 
     filter "system:windows"

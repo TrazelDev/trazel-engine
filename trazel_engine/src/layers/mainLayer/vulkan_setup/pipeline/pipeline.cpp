@@ -1,5 +1,7 @@
 #include "pch.h"
 #include "pipeline.h"
+#include "../model/model.h"
+
 vk::PipelineLayout vkInit::make_pipeline_layout(vk::Device& device)
 {
 	vk::PipelineLayoutCreateInfo layoutInfo;
@@ -71,18 +73,16 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 
 	std::vector<vk::PipelineShaderStageCreateInfo> shaderStages;
 
-	// vertext input:
-	//vk::VertexInputAttributeDescription vertexInputParamter;
-	//vertexInputParamter.binding = 0;
-	//vertexInputParamter.location = 0;
-	//vertexInputParamter.format = VK_FORMAT_R8G8B8A8_UNORM;
-
-	vk::PipelineVertexInputStateCreateInfo vertexInputInfo = {};
-	vertexInputInfo.flags = vk::PipelineVertexInputStateCreateFlags();
-	vertexInputInfo.vertexBindingDescriptionCount = 0;
-	vertexInputInfo.vertexAttributeDescriptionCount = 0;
-
-	pipelineInfo.pVertexInputState = &vertexInputInfo;
+	auto bindingDescription = vkUtil::model::vertex::getBindingDescriptions();
+	auto attributeDescription = vkUtil::model::vertex::getAttributeDescriptions();
+	VkPipelineVertexInputStateCreateInfo vertexInputInfo = {};
+	//vertexInputInfo.flags = vk::PipelineVertexInputStateCreateFlags();
+	vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
+	vertexInputInfo.vertexAttributeDescriptionCount = uint32_t(attributeDescription.size());
+	vertexInputInfo.vertexBindingDescriptionCount = uint32_t(bindingDescription.size());
+	vertexInputInfo.pVertexAttributeDescriptions = attributeDescription.data();
+	vertexInputInfo.pVertexBindingDescriptions = bindingDescription.data();
+	pipelineInfo.pVertexInputState = &vk::PipelineVertexInputStateCreateInfo(vertexInputInfo);
 
 	// input assembly:
 	vk::PipelineInputAssemblyStateCreateInfo inputAssemblyInfo = {};

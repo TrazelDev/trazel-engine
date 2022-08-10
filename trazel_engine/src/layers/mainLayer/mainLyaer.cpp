@@ -8,12 +8,12 @@
 #include "vulkan_setup/vulkan_logging/vulkan_logging.h"
 #include "vulkan_setup/instance/instance.h"
 #include "vulkan_setup/device/device.h"
-
 mainLyaer::~mainLyaer()
 {
 	device.waitIdle();
 
 
+	delete model;
 	device.destroyCommandPool(commandPool);
 
 	device.destroyPipeline(pipeline);
@@ -30,11 +30,10 @@ mainLyaer::~mainLyaer()
 	}
 
 	device.destroySwapchainKHR();
-	//device.destroyDescriptorPool();
+	device.destroyDescriptorPool();
 	device.destroy();
-
 	instance.destroySurfaceKHR(surface);
-
+	
 #ifndef Client_MODE
 	instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
 #endif
@@ -48,6 +47,7 @@ void mainLyaer::onAttach()
 {
 	makeInstance();
 	makeDevice();
+	loadModel();
 	makePipeline();
 	finalSetup();
 }
@@ -167,8 +167,8 @@ void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t ima
 
 	commandBuffer.beginRenderPass(&renderpassInfo, vk::SubpassContents::eInline);
 	commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline);
-	commandBuffer.draw(3, 1, 0, 0);
-	commandBuffer.draw(3, 1, 3, 0);
+	model->bind(commandBuffer);
+	model->draw(commandBuffer);
 	commandBuffer.endRenderPass();
 
 	try
@@ -262,3 +262,58 @@ void mainLyaer::calculateFrameRate()
 
 	numFrames++;
 }
+
+
+void make
+(
+	std::vector<vkUtil::model::vertex>& vertices,
+	int depth,
+	glm::vec2 left,
+	glm::vec2 right,
+	glm::vec2 top,
+	glm::vec3 colorLeft,
+	glm::vec3 colroRight,
+	glm::vec3 colorTop
+) 
+{
+	if (depth <= 0) {
+		vertices.push_back({ top   ,colorTop });
+		vertices.push_back({ right ,colroRight });
+		vertices.push_back({ left  ,colorLeft });
+	}
+	else {
+		auto leftTop = 0.5f * (left + top);
+		auto rightTop = 0.5f * (right + top);
+		auto leftRight = 0.5f * (left + right);
+		make(vertices, depth - 1, left, leftRight, leftTop, colorLeft ,colroRight, colorTop);
+		make(vertices, depth - 1, leftRight, right, rightTop, colorLeft, colroRight,colorTop);
+		make(vertices, depth - 1, leftTop, rightTop, top, colorLeft, colroRight, colorTop);
+	}
+}
+
+void mainLyaer::loadModel()
+{
+	std::vector<vkUtil::model::vertex> vertices
+	{
+		{{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
+		{{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
+		{{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
+	};
+
+	make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0}, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
+
+	vertices.push_back({{0.0f, 1.0f   } ,{0.0, 0.5, 1.0}});
+	vertices.push_back({{-1.0f, 1.0f  } ,{0.5, 0.0, 1.0}});
+	vertices.push_back({{-1.0f, -1.0f } ,{0.0, 0.0, 1.0}});
+	make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+
+	vertices.push_back({{1.0f, 1.0f } ,{0.0, 1.0, 1.0}});
+	vertices.push_back({{0.0f, 1.0f } ,{1.0, 1.0, 0.0}});
+	vertices.push_back({{1.0f, -1.0f} ,{0.0, 1.0, 0.0}});
+	make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
+	//vec3(0.0, 1.0, 1.0),
+//vec3(1.0, 1.0, 0.0),
+//vec3(0.0, 1.0, 0.0)
+	model = new vkUtil::model(physicalDevice, device, vertices);
+}
+

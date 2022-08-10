@@ -31,6 +31,9 @@
     <Filter Include="layers\mainLayer\vulkan_setup\instance">
       <UniqueIdentifier>{DA316D75-C683-4465-AFA2-81759B935D4E}</UniqueIdentifier>
     </Filter>
+    <Filter Include="layers\mainLayer\vulkan_setup\model">
+      <UniqueIdentifier>{F613F478-62CD-5E23-EB2C-79FD57E51493}</UniqueIdentifier>
+    </Filter>
     <Filter Include="layers\mainLayer\vulkan_setup\pipeline">
       <UniqueIdentifier>{1BDF4D62-0731-2552-F04F-6262DC403E3B}</UniqueIdentifier>
     </Filter>
@@ -104,6 +107,9 @@
     </ClInclude>
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\instance\instance.h">
       <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
+    </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\model\model.h">
+      <Filter>layers\mainLayer\vulkan_setup\model</Filter>
     </ClInclude>
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.h">
       <Filter>layers\mainLayer\vulkan_setup\pipeline</Filter>
@@ -180,6 +186,9 @@
     </ClCompile>
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\instance\instance.cpp">
       <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
+    </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\model\model.cpp">
+      <Filter>layers\mainLayer\vulkan_setup\model</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.cpp">
       <Filter>layers\mainLayer\vulkan_setup\pipeline</Filter>

@@ -80,7 +80,7 @@
       <PrecompiledHeaderFile>pch.h</PrecompiledHeaderFile>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;TZE_BUILD_DLL;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;..\{prj.name}\3d_party_extentions\glm-master\glm\detail;..\{prj.name}\3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -103,7 +103,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;TZE_BUILD_DLL;REALSE_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;..\{prj.name}\3d_party_extentions\glm-master\glm\detail;..\{prj.name}\3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -130,7 +130,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;TZE_BUILD_DLL;Client_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;..\imGui;..\imGui\backends;..\{prj.name}\3d_party_extentions\glm-master\glm\detail;..\{prj.name}\3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -162,6 +162,7 @@
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\device\swapchain.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\instance\instance.h" />
+    <ClInclude Include="src\layers\mainLayer\vulkan_setup\model\model.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.h" />
@@ -190,6 +191,7 @@
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\device\swapchain.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\instance\instance.cpp" />
+    <ClCompile Include="src\layers\mainLayer\vulkan_setup\model\model.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.cpp" />

@@ -79,7 +79,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;..\trazel_engine\3d_party_extentions\glm-master\glm\detail;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;REALSE_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;..\trazel_engine\3d_party_extentions\glm-master\glm\detail;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -116,7 +116,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;Client_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\trazel_engine\3d_party_extentions;..\trazel_engine\3d_party_extentions\spdlog\include;..\trazel_engine\3d_party_extentions\spdlog;..\trazel_engine\3d_party_extentions\glfw;..\trazel_engine\3d_party_extentions\glfw\include\GLFW;..\trazel_engine\3d_party_extentions\vulkan_sdk\Include;..\trazel_engine\src;..\imGui;..\imGui\backends;..\trazel_engine\3d_party_extentions\glm-master\glm\detail;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>

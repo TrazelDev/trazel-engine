@@ -1,7 +1,7 @@
 #pragma once
 #include "../layer.h"
 #include "vulkan_setup/device/swapchain.h"
-
+#include "vulkan_setup/model/model.h"
 
 class mainLyaer : public layer
 {
@@ -57,14 +57,20 @@ private:
 	//syncchoronzation related variables:
 	int maxFramesInFlight, frameNum;
 
-	// instance setup
+	// model realted variables:
+	vkUtil::model* model;
+
+	// instance setup:
 	void makeInstance();
 
-	// device setup
+	// device setup:
 	void makeDevice();
 
-	// pipeline setup
+	// pipeline setup:
 	void makePipeline();
+	
+	// model loading:
+	void loadModel();
 
 	void finalSetup();
 
@@ -73,5 +79,6 @@ private:
 	void render();
 	void calculateFrameRate();
 
+	
 };
 

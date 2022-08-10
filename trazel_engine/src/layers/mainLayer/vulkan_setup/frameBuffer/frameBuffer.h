@@ -11,5 +11,14 @@ namespace vkInit
 	};
 
 	void make_framebuffers(frameBufferInput& inputChunk, std::vector<vkUtil::SwapchainFrame>& frames);
+
+	void createBuffer(
+		VkDeviceSize size,
+		VkBufferUsageFlags usage,
+		VkMemoryPropertyFlags properties,
+		vk::Device& device,
+		vk::PhysicalDevice& physicalDevice,
+		VkBuffer& buffer,
+		VkDeviceMemory& bufferMemory);
 }
 

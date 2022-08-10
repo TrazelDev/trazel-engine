@@ -31,6 +31,9 @@
 #include <set>
 #include <fstream>
 
+#define GLM_FORCE_RADIANTS
+#define GLM_FORCE_DEPTH_ZERO_TO_ONE
+#include <glm-master/glm/glm.hpp>
 
 #ifdef TZE_PLATFORM_WINDOWS
 	#define _WIN32_WINNT 0x0601

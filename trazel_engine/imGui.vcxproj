@@ -76,7 +76,7 @@
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;DEBUG_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;3d_party_extentions\glm-master\glm\detail;3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <DebugInformationFormat>EditAndContinue</DebugInformationFormat>
       <Optimization>Disabled</Optimization>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
@@ -96,7 +96,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;DEBUG_MODE;REALSE_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;3d_party_extentions\glm-master\glm\detail;3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
@@ -120,7 +120,7 @@
       <WarningLevel>Level3</WarningLevel>
       <BasicRuntimeChecks>Default</BasicRuntimeChecks>
       <PreprocessorDefinitions>TZE_PLATFORM_WINDOWS;Client_MODE;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\imGui;..\imGui\backends;3d_party_extentions;3d_party_extentions\spdlog\include;3d_party_extentions\spdlog;3d_party_extentions\glfw;3d_party_extentions\glfw\include;3d_party_extentions\glfw\include\GLFW;3d_party_extentions\vulkan_sdk\Include;3d_party_extentions\imgui;src;3d_party_extentions\glm-master\glm\detail;3d_party_extentions\glm-master\glm;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <Optimization>Full</Optimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <IntrinsicFunctions>true</IntrinsicFunctions>
