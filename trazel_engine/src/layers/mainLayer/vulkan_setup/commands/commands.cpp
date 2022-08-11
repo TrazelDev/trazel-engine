@@ -67,4 +67,3 @@ vk::CommandBuffer vkInit::make_command_buffers(commandBufferInputChunk inputChun
 		return nullptr;
 	}
 }
-

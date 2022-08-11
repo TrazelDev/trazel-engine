@@ -2,7 +2,7 @@
 #include "../layer.h"
 #include "pch.h"
 
-class imguiLayer : public layer
+class imguiLayer : tze::layer
 {
 public:
 	imguiLayer(GLFWwindow* Window, const char* Title, uint32_t Width, uint32_t Height)

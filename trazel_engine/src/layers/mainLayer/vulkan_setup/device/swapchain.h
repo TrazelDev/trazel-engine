@@ -25,8 +25,7 @@ namespace vkInit
 	vk::SurfaceFormatKHR choose_swapchain_surface_fromat(std::vector<vk::SurfaceFormatKHR>& formats);
 	vk::PresentModeKHR choose_swapchain_presentmode(std::vector<vk::PresentModeKHR>& presentModes);
 	vk::Extent2D choose_swapchain_extent(uint32_t& width, uint32_t& height, vk::SurfaceCapabilitiesKHR& capabilities);
-	SwapchainBundle create_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height);
-	void recreate_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height);
+	SwapchainBundle create_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height, vk::SwapchainKHR* oldSwapchain = nullptr);
 }
 
 

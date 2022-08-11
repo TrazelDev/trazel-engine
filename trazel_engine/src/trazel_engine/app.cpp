@@ -4,14 +4,14 @@
 namespace tze {
 	app::app()
 	{
-		mainWindow = new windowsWindow();
+		mainWindow = std::unique_ptr<windowsWindow>(new windowsWindow{ });
 		windowsWindow::windowProps* windowProperties = mainWindow->getWindowProps();
 		window = windowProperties->window;
-
+		
 		//imguiLay = new imguiLayer(windowProperties->window, windowProperties->title, *windowProperties->width, *windowProperties->height);
 		//imguiLay->onAttach();
 
-		majorLay = new mainLyaer(windowProperties->window, windowProperties->title, *windowProperties->width, *windowProperties->height);
+		majorLay = std::unique_ptr<mainLyaer>(new mainLyaer{ windowProperties->window, windowProperties->title, *windowProperties->width, *windowProperties->height, mainWindow });
 		majorLay->onAttach();
 
 		TZE_CLIENT_INFO("the window is up and running");
@@ -20,9 +20,9 @@ namespace tze {
 	app::~app()
 	{
 		//delete imguiLay;
-		delete majorLay;
-
-		TZE_CLIENT_INFO("the engine was successfully closed");
+		majorLay.reset();
+		mainWindow.reset();
+		TZE_CLIENT_INFO("the app was successfully closed");
 	}
 
 	void app::run()

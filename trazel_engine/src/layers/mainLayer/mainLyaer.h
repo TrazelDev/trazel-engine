@@ -3,82 +3,97 @@
 #include "vulkan_setup/device/swapchain.h"
 #include "vulkan_setup/model/model.h"
 
-class mainLyaer : public layer
+namespace tze
 {
-public:
-	mainLyaer(GLFWwindow* Window, const char* Title, uint32_t Width, uint32_t Height)
+	class mainLyaer : layer
 	{
-		window = Window;
-		title = Title;
-		width = width;
-		height = Height;
-	}
-	~mainLyaer();
+	public:
+		mainLyaer(GLFWwindow* Window, const char* Title, uint32_t Width, uint32_t Height, const std::unique_ptr<windowsWindow>& MainWindow)
+		{
+			window = Window;
+			title = Title;
+			width = width;
+			height = Height;
+			mainWindow = MainWindow.get();
+		}
+		~mainLyaer();
 
-	virtual void onAttach() override;
-	virtual void onDetach() override {};
-	virtual void onUpdate() override;
-	virtual void onEvent() override {};
+		virtual void onAttach() override;
+		virtual void onDetach() override {};
+		virtual void onUpdate() override;
+		virtual void onEvent() override {};
 
-private:
-	// frames pramters:
-	double lastTime, currentTime;
-	int numFrames;
-	float frameTime;
+	private:
+		windowsWindow* mainWindow;
 
-	// vulkan instance: 
-	vk::Instance instance{ nullptr };
-	vk::DebugUtilsMessengerEXT debugMessenger{ nullptr };
-	vk::DispatchLoaderDynamic dldi;
+		// frames pramters:
+		double lastTime, currentTime;
+		int numFrames;
+		float frameTime;
 
-	// device related variables:
-	vk::PhysicalDevice physicalDevice{ nullptr };
-	vk::Device device{ nullptr };
-	vk::Queue graphicsQueue{ nullptr };
-	vk::SurfaceKHR surface;
-	vk::Queue presentQueue;
-	vk::SwapchainKHR swapchain;
-	std::vector<vkUtil::SwapchainFrame> swapchainFrames;
-	vk::Format swapchainFormat;
-	vk::Extent2D swapchainExtent;
+		// vulkan instance: 
+		vk::Instance instance{ nullptr };
+		vk::DebugUtilsMessengerEXT debugMessenger{ nullptr };
+		vk::DispatchLoaderDynamic dldi;
 
-	// pipeline related variables:
-	vk::PipelineLayout layout;
-	vk::RenderPass renderpass;
-	vk::Pipeline pipeline;
+		// device related variables:
+		vk::PhysicalDevice physicalDevice{ nullptr };
+		vk::Device device{ nullptr };
+		vk::Queue graphicsQueue{ nullptr };
+		vk::SurfaceKHR surface;
+		vk::Queue presentQueue;
+		vk::SwapchainKHR* swapchain;
+		std::vector<vkUtil::SwapchainFrame> swapchainFrames;
+		vk::Format swapchainFormat;
+		vk::Extent2D swapchainExtent;
+		vkInit::SwapchainBundle bundle;
 
-	// command related variables:
-	vk::CommandPool commandPool;
-	vk::CommandBuffer commandBuffer;
+		// pipeline related variables:
+		vk::PipelineLayout layout;
+		vk::RenderPass renderpass;
+		vk::Pipeline pipeline;
 
-	// descriptorPool related variables:
-	VkDescriptorPool descriptorPool;
+		// command related variables:
+		vk::CommandPool commandPool;
+		vk::CommandBuffer commandBuffer;
 
-	//syncchoronzation related variables:
-	int maxFramesInFlight, frameNum;
+		// descriptorPool related variables:
+		VkDescriptorPool descriptorPool;
 
-	// model realted variables:
-	vkUtil::model* model;
+		//syncchoronzation related variables:
+		int maxFramesInFlight, frameNum;
 
-	// instance setup:
-	void makeInstance();
+		// model realted variables:
+		std::unique_ptr<vkUtil::model> model;
 
-	// device setup:
-	void makeDevice();
+		// getting results:
+		vk::Result result;
 
-	// pipeline setup:
-	void makePipeline();
-	
-	// model loading:
-	void loadModel();
+		// instance setup:
+		void makeInstance();
 
-	void finalSetup();
+		// device setup:
+		void makeDevice();
 
-	void recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
+		// pipeline setup:
+		void makePipeline();
 
-	void render();
-	void calculateFrameRate();
+		// model loading:
+		void loadModel();
 
-	
-};
+		void finalSetup();
 
+
+		void recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
+
+		void render();
+		void calculateFrameRate();
+
+		// resizing window:
+		void recreateSwapchain();
+		void recordCommandBuffer(int imageIndex);
+
+		void recreate_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height);
+		void recreate_swapchain();
+	};
+}

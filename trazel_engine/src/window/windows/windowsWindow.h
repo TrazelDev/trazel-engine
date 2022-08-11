@@ -18,7 +18,6 @@ public:
 		uint32_t* height;
 		const char* title;
 	};
-
 	windowProps* getWindowProps()
 	{
 		windowProps* thisWindowPros = new windowProps();
@@ -29,32 +28,19 @@ public:
 		return thisWindowPros;
 	}
 
+	// functions for rezing 
+	bool wasWindowResized() { return frameBufferResized; };
+	void resetWindowResizedFlag() { frameBufferResized = false; };;
+	static void frameBufferResizedCallback(GLFWwindow* window, int width, int height);
 private:
 	// the glfw window parameters:
 	GLFWwindow* window;
 	uint32_t width;
 	uint32_t height;
 	const char* title;
-	bool framebufferResized;
-
+	bool frameBufferResized = false;
 	// creating glfw window
 	void buildGLFWWindow(int width, int height);
 
-	// change window props:
-	bool wasWindowResized() { return framebufferResized; }
-	////void resetWindowResizedFlag() { framebufferResized = false; }
-	//static void framebufferResizedCallback(GLFWwindow* window, int width, int height);
-	//void recreateSwapChain();
-	//void recordCommendBuffer(int imageIndex);
-
-
-
-	// ImGui:
-	//ImGui_ImplVulkanH_Window mainWindowData;
-	// uint32_t g_QueueFamily = (uint32_t)-1;
-	//VkAllocationCallbacks* allocator;
-	//void createImGui();
-	//void SetupVulkanWindow(ImGui_ImplVulkanH_Window* wd, VkSurfaceKHR surface, int width, int height);
-	//tze::imGuiLayer imGui;
 };
 }

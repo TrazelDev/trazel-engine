@@ -125,7 +125,7 @@ vk::Extent2D vkInit::choose_swapchain_extent(uint32_t& width, uint32_t& height, 
 }
 
 
-vkInit::SwapchainBundle vkInit::create_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height)
+vkInit::SwapchainBundle vkInit::create_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height, vk::SwapchainKHR* oldSwapchain)
 {
 	swapchainSupportDetails support = query_swapchain_support(physicalDevice, surface);
 
@@ -162,8 +162,14 @@ vkInit::SwapchainBundle vkInit::create_swapchain(vk::Device& logicalDevice, vk::
 	createInfo.presentMode = presentMode;
 	createInfo.clipped = VK_TRUE;
 
-	createInfo.oldSwapchain = vk::SwapchainKHR(nullptr);
-
+	if (oldSwapchain != nullptr)
+	{
+		createInfo.oldSwapchain = *oldSwapchain;
+	}
+	else
+	{
+		createInfo.oldSwapchain = vk::SwapchainKHR(nullptr);
+	}
 	SwapchainBundle bundle;
 	try
 	{
@@ -203,11 +209,4 @@ vkInit::SwapchainBundle vkInit::create_swapchain(vk::Device& logicalDevice, vk::
 	bundle.extent = extent;
 
 	return bundle;
-}
-
-void vkInit::recreate_swapchain(vk::Device& device, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height)
-{
-	vkDeviceWaitIdle(device);
-	create_swapchain(device, physicalDevice, surface, width, height);
-	
 }

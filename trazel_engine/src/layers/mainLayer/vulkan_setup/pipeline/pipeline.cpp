@@ -115,6 +115,7 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 	scissor.offset.x = 0.0f;
 	scissor.offset.y = 0.0f;
 	scissor.extent = specification.swapchainExtent;
+
 	vk::PipelineViewportStateCreateInfo viewportState = {};
 	viewportState.flags = vk::PipelineViewportStateCreateFlags();
 	viewportState.viewportCount = 1;
@@ -122,6 +123,7 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 	viewportState.scissorCount = 1;
 	viewportState.pScissors = &scissor;
 
+	//pipelineInfo.pDynamicState = &viewportState;
 	pipelineInfo.pViewportState = &viewportState;
 
 	// resterizer:

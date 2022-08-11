@@ -8,312 +8,356 @@
 #include "vulkan_setup/vulkan_logging/vulkan_logging.h"
 #include "vulkan_setup/instance/instance.h"
 #include "vulkan_setup/device/device.h"
-mainLyaer::~mainLyaer()
+
+
+namespace tze
 {
-	device.waitIdle();
-
-
-	delete model;
-	device.destroyCommandPool(commandPool);
-
-	device.destroyPipeline(pipeline);
-	device.destroyPipelineLayout(layout);
-	device.destroyRenderPass(renderpass);
-
-	for (vkUtil::SwapchainFrame frame : swapchainFrames)
+	mainLyaer::~mainLyaer()
 	{
-		device.destroyImageView(frame.imageView);
-		device.destroyFramebuffer(frame.frameBuffer);
-		device.destroyFence(frame.inFlight);
-		device.destroySemaphore(frame.imageAvailable);
-		device.destroySemaphore(frame.renderFinished);
-	}
+		device.waitIdle();
 
-	device.destroySwapchainKHR();
-	device.destroyDescriptorPool();
-	device.destroy();
-	instance.destroySurfaceKHR(surface);
-	
+
+		model.reset();
+		device.destroyCommandPool(commandPool);
+
+		device.destroyPipeline(pipeline);
+		device.destroyPipelineLayout(layout);
+		device.destroyRenderPass(renderpass);
+
+		for (vkUtil::SwapchainFrame frame : swapchainFrames)
+		{
+			device.destroyImageView(frame.imageView);
+			device.destroyFramebuffer(frame.frameBuffer);
+			device.destroyFence(frame.inFlight);
+			device.destroySemaphore(frame.imageAvailable);
+			device.destroySemaphore(frame.renderFinished);
+		}
+
+		device.destroySwapchainKHR();
+		device.destroyDescriptorPool();
+		device.destroy();
+		instance.destroySurfaceKHR(surface);
+
 #ifndef Client_MODE
-	instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
+		instance.destroyDebugUtilsMessengerEXT(debugMessenger, nullptr, dldi);
 #endif
 
 
-	instance.destroy();
-}
+		instance.destroy();
+	}
 
 
-void mainLyaer::onAttach()
-{
-	makeInstance();
-	makeDevice();
-	loadModel();
-	makePipeline();
-	finalSetup();
-}
-
-
-void mainLyaer::makeInstance()
-{
-	instance = vkInit::make_instance(title);
-	dldi = vk::DispatchLoaderDynamic(instance, vkGetInstanceProcAddr);
-
-	#ifndef Client_MODE
-	debugMessenger = vkInit::make_debug_messenger(instance, dldi);
-	#endif
-
-	VkSurfaceKHR c_stayle_surface;
-	if (glfwCreateWindowSurface(instance, window, nullptr, &c_stayle_surface) != VK_SUCCESS)
+	void mainLyaer::onAttach()
 	{
-		#ifndef Client_MODE
-		TZE_ENGINE_ERR("failed to abstract the glfw surface for Vulkan.\n");
-		#endif
+		makeInstance();
+		makeDevice();
+		loadModel();
+		makePipeline();
+		finalSetup();
 	}
-	else
+
+
+	void mainLyaer::makeInstance()
 	{
-		#ifndef Client_MODE
-		TZE_ENGINE_INFO("Successfully to abstracted the glfw surface for Vulkan.");
-		#endif
+		instance = vkInit::make_instance(title);
+		dldi = vk::DispatchLoaderDynamic(instance, vkGetInstanceProcAddr);
+
+#ifndef Client_MODE
+		debugMessenger = vkInit::make_debug_messenger(instance, dldi);
+#endif
+
+		VkSurfaceKHR c_stayle_surface;
+		if (glfwCreateWindowSurface(instance, window, nullptr, &c_stayle_surface) != VK_SUCCESS)
+		{
+#ifndef Client_MODE
+			TZE_ENGINE_ERR("failed to abstract the glfw surface for Vulkan.\n");
+#endif
+		}
+		else
+		{
+#ifndef Client_MODE
+			TZE_ENGINE_INFO("Successfully to abstracted the glfw surface for Vulkan.");
+#endif
+		}
+
+		surface = c_stayle_surface;
 	}
 
-	surface = c_stayle_surface;
-}
 
-
-void mainLyaer::makeDevice()
-{
-	physicalDevice = vkInit::choose_physical_device(instance);
-	device = vkInit::create_logical_device(physicalDevice, surface);
-	std::array<vk::Queue, 2> queues = vkInit::get_queue(physicalDevice, device, surface);
-	graphicsQueue = queues[0];
-	presentQueue = queues[1];
-
-	vkInit::SwapchainBundle bundle = vkInit::create_swapchain(device, physicalDevice, surface, width, height);
-	swapchain = bundle.swapchain;
-	swapchainFrames = bundle.frames;
-	swapchainFormat = bundle.format;
-	swapchainExtent = bundle.extent;
-	maxFramesInFlight = int(swapchainFrames.size());
-	frameNum = 0;
-}
-
-
-void mainLyaer::makePipeline()
-{
-	vkInit::graphicsPiplineInBundle spesefication = {};
-	spesefication.device = device;
-	spesefication.vertexFilepath = "C:\\Dev_programmer\\trazel_engine\\trazel_engine\\src\\layers\\mainLayer\\shading\\vertex.spv";
-	spesefication.fragmentFilepath = "C:\\Dev_programmer\\trazel_engine\\trazel_engine\\src\\layers\\mainLayer\\shading\\fragment.spv";
-	spesefication.swapchainImageFormat = swapchainFormat;
-	spesefication.swapchainExtent = swapchainExtent;
-
-	vkInit::graphicsPiplineOutBundle output = vkInit::make_graphics_pipeline(spesefication);
-
-	layout = output.layout;
-	renderpass = output.renderpass;
-	pipeline = output.pipeline;
-}
-
-
-void mainLyaer::finalSetup()
-{
-	vkInit::frameBufferInput frameBufferInput;
-	frameBufferInput.device = device;
-	frameBufferInput.renderpass = renderpass;
-	frameBufferInput.swapchainExtent = swapchainExtent;
-	vkInit::make_framebuffers(frameBufferInput, swapchainFrames);
-
-	commandPool = vkInit::make_command_pool(device, physicalDevice, surface);
-
-	vkInit::commandBufferInputChunk commandBufferInput = { device, commandPool, swapchainFrames };
-	commandBuffer = vkInit::make_command_buffers(commandBufferInput);
-
-	//vkInit::createDescriptorPool(device, descriptorPool);
-	for (vkUtil::SwapchainFrame& frame : swapchainFrames)
+	void mainLyaer::makeDevice()
 	{
-		frame.inFlight = vkInit::make_fence(device);
-		frame.imageAvailable = vkInit::make_semaphore(device);
-		frame.renderFinished = vkInit::make_semaphore(device);
+		physicalDevice = vkInit::choose_physical_device(instance);
+		device = vkInit::create_logical_device(physicalDevice, surface);
+		std::array<vk::Queue, 2> queues = vkInit::get_queue(physicalDevice, device, surface);
+		graphicsQueue = queues[0];
+		presentQueue = queues[1];
+
+		bundle = vkInit::create_swapchain(device, physicalDevice, surface, width, height);
+		swapchain = new vk::SwapchainKHR(bundle.swapchain);
+		swapchainFrames = bundle.frames;
+		swapchainFormat = bundle.format;
+		swapchainExtent = bundle.extent;
+		maxFramesInFlight = int(swapchainFrames.size());
+		frameNum = 0;
 	}
 
 
-}
-
-
-void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex)
-{
-	vk::CommandBufferBeginInfo beginInfo = {};
-	try
+	void mainLyaer::makePipeline()
 	{
-		commandBuffer.begin(beginInfo);
+		vkInit::graphicsPiplineInBundle spesefication = {};
+		spesefication.device = device;
+		spesefication.vertexFilepath = "C:\\Dev_programmer\\trazel_engine\\trazel_engine\\src\\layers\\mainLayer\\shading\\vertex.spv";
+		spesefication.fragmentFilepath = "C:\\Dev_programmer\\trazel_engine\\trazel_engine\\src\\layers\\mainLayer\\shading\\fragment.spv";
+		spesefication.swapchainImageFormat = swapchainFormat;
+		spesefication.swapchainExtent = swapchainExtent;
+
+		vkInit::graphicsPiplineOutBundle output = vkInit::make_graphics_pipeline(spesefication);
+
+		layout = output.layout;
+		renderpass = output.renderpass;
+		pipeline = output.pipeline;
 	}
-	catch (vk::SystemError err)
+
+
+	void mainLyaer::finalSetup()
 	{
-		#ifndef Client_MODE
-		TZE_ENGINE_ERR("failed to begin recording command buufer");
-		#endif
+		vkInit::frameBufferInput frameBufferInput;
+		frameBufferInput.device = device;
+		frameBufferInput.renderpass = renderpass;
+		frameBufferInput.swapchainExtent = swapchainExtent;
+		vkInit::make_framebuffers(frameBufferInput, swapchainFrames);
+
+		commandPool = vkInit::make_command_pool(device, physicalDevice, surface);
+
+		vkInit::commandBufferInputChunk commandBufferInput = { device, commandPool, swapchainFrames };
+		commandBuffer = vkInit::make_command_buffers(commandBufferInput);
+
+		//vkInit::createDescriptorPool(device, descriptorPool);
+		for (vkUtil::SwapchainFrame& frame : swapchainFrames)
+		{
+			frame.inFlight = vkInit::make_fence(device);
+			frame.imageAvailable = vkInit::make_semaphore(device);
+			frame.renderFinished = vkInit::make_semaphore(device);
+		}
 	}
 
-	vk::RenderPassBeginInfo renderpassInfo = {};
-	renderpassInfo.renderPass = renderpass;
-	renderpassInfo.framebuffer = swapchainFrames[imageIndex].frameBuffer;
-	renderpassInfo.renderArea.offset.x = 0;
-	renderpassInfo.renderArea.offset.y = 0;
-	renderpassInfo.renderArea.extent = swapchainExtent;
 
-	vk::ClearValue clearColor = { std::array<float, 4> {1.0f, 1.0f, 1.0f, 1.0f} };
-	renderpassInfo.clearValueCount = 1;
-	renderpassInfo.pClearValues = &clearColor;
-
-	commandBuffer.beginRenderPass(&renderpassInfo, vk::SubpassContents::eInline);
-	commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline);
-	model->bind(commandBuffer);
-	model->draw(commandBuffer);
-	commandBuffer.endRenderPass();
-
-	try
+	void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex)
 	{
-		commandBuffer.end();
+		vk::CommandBufferBeginInfo beginInfo = {};
+		try
+		{
+			commandBuffer.begin(beginInfo);
+		}
+		catch (vk::SystemError err)
+		{
+#ifndef Client_MODE
+			TZE_ENGINE_ERR("failed to begin recording command buufer");
+#endif
+		}
+
+		vk::RenderPassBeginInfo renderpassInfo = {};
+		renderpassInfo.renderPass = renderpass;
+		renderpassInfo.framebuffer = swapchainFrames[imageIndex].frameBuffer;
+		renderpassInfo.renderArea.offset.x = 0;
+		renderpassInfo.renderArea.offset.y = 0;
+		renderpassInfo.renderArea.extent = swapchainExtent;
+
+		vk::ClearValue clearColor = { std::array<float, 4> {1.0f, 1.0f, 1.0f, 1.0f} };
+		renderpassInfo.clearValueCount = 1;
+		renderpassInfo.pClearValues = &clearColor;
+
+		commandBuffer.beginRenderPass(&renderpassInfo, vk::SubpassContents::eInline);
+		commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline);
+		model->bind(commandBuffer);
+		model->draw(commandBuffer);
+		commandBuffer.endRenderPass();
+
+		try
+		{
+			commandBuffer.end();
+		}
+		catch (vk::SystemError err)
+		{
+#ifndef Client_MODE
+			TZE_ENGINE_ERR("failed to finish command buffer");
+#endif
+		}
 	}
-	catch (vk::SystemError err)
+
+
+	void mainLyaer::render()
 	{
-		#ifndef Client_MODE
-		TZE_ENGINE_ERR("failed to finish command buffer");
-		#endif
+		device.waitForFences(1, &swapchainFrames[frameNum].inFlight, VK_TRUE, UINT64_MAX);
+		device.resetFences(1, &swapchainFrames[frameNum].inFlight);
+
+		uint32_t imageIndex{ device.acquireNextImageKHR(*swapchain, UINT64_MAX, swapchainFrames[frameNum].imageAvailable, nullptr).value };
+
+		vk::CommandBuffer commandBuffer = swapchainFrames[frameNum].commandBuffer;
+
+		commandBuffer.reset();
+
+		recordDrawCommands(commandBuffer, imageIndex);
+
+		vk::SubmitInfo submitInfo = {};
+
+		vk::Semaphore waitSemaphores[] = { swapchainFrames[frameNum].imageAvailable };
+		vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
+		submitInfo.waitSemaphoreCount = 1;
+		submitInfo.pWaitSemaphores = waitSemaphores;
+		submitInfo.pWaitDstStageMask = waitStages;
+
+		submitInfo.commandBufferCount = 1;
+		submitInfo.pCommandBuffers = &commandBuffer;
+
+		vk::Semaphore signalSemaphores[] = { swapchainFrames[frameNum].renderFinished };
+		submitInfo.signalSemaphoreCount = 1;
+		submitInfo.pSignalSemaphores = signalSemaphores;
+
+		try {
+			graphicsQueue.submit(submitInfo, swapchainFrames[frameNum].inFlight);
+		}
+		catch (vk::SystemError err) {
+#ifndef Client_MODE
+			TZE_ENGINE_ERR("failed to submit draw command buffer!");
+#endif
+		}
+
+
+		vk::PresentInfoKHR presentInfo = {};
+		presentInfo.waitSemaphoreCount = 1;
+		presentInfo.pWaitSemaphores = signalSemaphores;
+
+		vk::SwapchainKHR swapChains[] = { *swapchain };
+		presentInfo.swapchainCount = 1;
+		presentInfo.pSwapchains = swapChains;
+
+		presentInfo.pImageIndices = &imageIndex;
+
+
+		////////////////////////
+		// uint32_t frameNum32_t = frameNum;
+		// result = vkAcquireNextImageKHR
+		// (
+		// 	device,
+		// 	*swapchain,
+		// 	std::numeric_limits<uint64_t>::max(),
+		// 	swapchainFrames[frameNum].imageAvailable,  // must be a not signaled semaphore
+		// 	swapchainFrames[frameNum].inFlight,
+		// 	&frameNum32_t
+		// );
+		// if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		// {
+		// 	recreate_swapchain();
+		// }
+		////////////////////////////////
+
+		if (result == vk::Result::eErrorOutOfDateKHR || result == vk::Result::eSuboptimalKHR || mainWindow->wasWindowResized())
+		{
+			mainWindow->resetWindowResizedFlag();
+			recreate_swapchain();
+			return;
+		}
+		frameNum = (frameNum + 1) % maxFramesInFlight;
+		result = presentQueue.presentKHR(presentInfo);
+
 	}
-}
 
 
-void mainLyaer::render()
-{
-	device.waitForFences(1, &swapchainFrames[frameNum].inFlight, VK_TRUE, UINT64_MAX);
-	device.resetFences(1, &swapchainFrames[frameNum].inFlight);
-
-	uint32_t imageIndex{ device.acquireNextImageKHR(swapchain, UINT64_MAX, swapchainFrames[frameNum].imageAvailable, nullptr).value };
-
-	vk::CommandBuffer commandBuffer = swapchainFrames[frameNum].commandBuffer;
-
-	commandBuffer.reset();
-
-	recordDrawCommands(commandBuffer, imageIndex);
-
-	vk::SubmitInfo submitInfo = {};
-
-	vk::Semaphore waitSemaphores[] = { swapchainFrames[frameNum].imageAvailable };
-	vk::PipelineStageFlags waitStages[] = { vk::PipelineStageFlagBits::eColorAttachmentOutput };
-	submitInfo.waitSemaphoreCount = 1;
-	submitInfo.pWaitSemaphores = waitSemaphores;
-	submitInfo.pWaitDstStageMask = waitStages;
-
-	submitInfo.commandBufferCount = 1;
-	submitInfo.pCommandBuffers = &commandBuffer;
-
-	vk::Semaphore signalSemaphores[] = { swapchainFrames[frameNum].renderFinished };
-	submitInfo.signalSemaphoreCount = 1;
-	submitInfo.pSignalSemaphores = signalSemaphores;
-
-	try {
-		graphicsQueue.submit(submitInfo, swapchainFrames[frameNum].inFlight);
-	}
-	catch (vk::SystemError err) {
-		#ifndef Client_MODE
-		TZE_ENGINE_ERR("failed to submit draw command buffer!");
-		#endif
-	}
-
-	vk::PresentInfoKHR presentInfo = {};
-	presentInfo.waitSemaphoreCount = 1;
-	presentInfo.pWaitSemaphores = signalSemaphores;
-
-	vk::SwapchainKHR swapChains[] = { swapchain };
-	presentInfo.swapchainCount = 1;
-	presentInfo.pSwapchains = swapChains;
-
-	presentInfo.pImageIndices = &imageIndex;
-
-	presentQueue.presentKHR(presentInfo);
-
-	frameNum = (frameNum + 1) % maxFramesInFlight;
-}
-
-
-void mainLyaer::onUpdate()
-{	
-	render();
-	calculateFrameRate();
-}
-
-
-void mainLyaer::calculateFrameRate()
-{
-	currentTime = glfwGetTime();
-	double delta = currentTime - lastTime;
-
-	if (delta >= 1)
+	void mainLyaer::onUpdate()
 	{
-		int framerate{ std::max(1, int(numFrames / delta)) };
-		std::stringstream title;
-		title << "running at " << framerate << " fps.";
-		glfwSetWindowTitle(window, title.str().c_str());
-		lastTime = currentTime;
-		numFrames = -1;
-		frameTime = float(1000.0 / framerate);
+		render();
+		calculateFrameRate();
 	}
 
-	numFrames++;
-}
 
-
-void make
-(
-	std::vector<vkUtil::model::vertex>& vertices,
-	int depth,
-	glm::vec2 left,
-	glm::vec2 right,
-	glm::vec2 top,
-	glm::vec3 colorLeft,
-	glm::vec3 colroRight,
-	glm::vec3 colorTop
-) 
-{
-	if (depth <= 0) {
-		vertices.push_back({ top   ,colorTop });
-		vertices.push_back({ right ,colroRight });
-		vertices.push_back({ left  ,colorLeft });
-	}
-	else {
-		auto leftTop = 0.5f * (left + top);
-		auto rightTop = 0.5f * (right + top);
-		auto leftRight = 0.5f * (left + right);
-		make(vertices, depth - 1, left, leftRight, leftTop, colorLeft ,colroRight, colorTop);
-		make(vertices, depth - 1, leftRight, right, rightTop, colorLeft, colroRight,colorTop);
-		make(vertices, depth - 1, leftTop, rightTop, top, colorLeft, colroRight, colorTop);
-	}
-}
-
-void mainLyaer::loadModel()
-{
-	std::vector<vkUtil::model::vertex> vertices
+	void mainLyaer::calculateFrameRate()
 	{
-		{{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
-		{{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
-		{{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
-	};
+		currentTime = glfwGetTime();
+		double delta = currentTime - lastTime;
 
-	make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0}, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
+		if (delta >= 1)
+		{
+			int framerate{ std::max(1, int(numFrames / delta)) };
+			std::stringstream title;
+			title << "running at " << framerate << " fps.";
+			glfwSetWindowTitle(window, title.str().c_str());
+			lastTime = currentTime;
+			numFrames = -1;
+			frameTime = float(1000.0 / framerate);
+		}
 
-	vertices.push_back({{0.0f, 1.0f   } ,{0.0, 0.5, 1.0}});
-	vertices.push_back({{-1.0f, 1.0f  } ,{0.5, 0.0, 1.0}});
-	vertices.push_back({{-1.0f, -1.0f } ,{0.0, 0.0, 1.0}});
-	make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+		numFrames++;
+	}
 
-	vertices.push_back({{1.0f, 1.0f } ,{0.0, 1.0, 1.0}});
-	vertices.push_back({{0.0f, 1.0f } ,{1.0, 1.0, 0.0}});
-	vertices.push_back({{1.0f, -1.0f} ,{0.0, 1.0, 0.0}});
-	make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
-	//vec3(0.0, 1.0, 1.0),
-//vec3(1.0, 1.0, 0.0),
-//vec3(0.0, 1.0, 0.0)
-	model = new vkUtil::model(physicalDevice, device, vertices);
+
+	void make
+	(
+		std::vector<vkUtil::model::vertex>& vertices,
+		int depth,
+		glm::vec2 left,
+		glm::vec2 right,
+		glm::vec2 top,
+		glm::vec3 colorLeft,
+		glm::vec3 colroRight,
+		glm::vec3 colorTop
+	)
+	{
+		if (depth <= 0) {
+			vertices.push_back({ top   ,colorTop });
+			vertices.push_back({ right ,colroRight });
+			vertices.push_back({ left  ,colorLeft });
+		}
+		else {
+			auto leftTop = 0.5f * (left + top);
+			auto rightTop = 0.5f * (right + top);
+			auto leftRight = 0.5f * (left + right);
+			make(vertices, depth - 1, left, leftRight, leftTop, colorLeft, colroRight, colorTop);
+			make(vertices, depth - 1, leftRight, right, rightTop, colorLeft, colroRight, colorTop);
+			make(vertices, depth - 1, leftTop, rightTop, top, colorLeft, colroRight, colorTop);
+		}
+	}
+
+	void mainLyaer::loadModel()
+	{
+		std::vector<vkUtil::model::vertex> vertices
+		{
+			{{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
+			{{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
+			{{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
+		};
+
+		make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0 }, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
+
+		vertices.push_back({ {0.0f, 1.0f   } ,{0.0, 0.5, 1.0} });
+		vertices.push_back({ {-1.0f, 1.0f  } ,{0.5, 0.0, 1.0} });
+		vertices.push_back({ {-1.0f, -1.0f } ,{0.0, 0.0, 1.0} });
+		make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+
+		vertices.push_back({ {1.0f, 1.0f } ,{0.0, 1.0, 1.0} });
+		vertices.push_back({ {0.0f, 1.0f } ,{1.0, 1.0, 0.0} });
+		vertices.push_back({ {1.0f, -1.0f} ,{0.0, 1.0, 0.0} });
+		make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
+
+		model = std::unique_ptr<vkUtil::model>(new vkUtil::model{ physicalDevice, device, vertices });
+	}
+
+	void mainLyaer::recreate_swapchain()
+	{
+		//VkExtent2D extent = getExtent();
+		while (width == 0 || height == 0)
+		{
+			glfwWaitEvents();
+		}
+
+		vkDeviceWaitIdle(device);
+		bundle = vkInit::create_swapchain(device, physicalDevice, surface, width, height , swapchain);
+		swapchain = new vk::SwapchainKHR(bundle.swapchain);
+		swapchainFrames = bundle.frames;
+		swapchainFormat = bundle.format;
+		swapchainExtent = bundle.extent;
+
+		makePipeline();
+		finalSetup();
+	}
 }
-

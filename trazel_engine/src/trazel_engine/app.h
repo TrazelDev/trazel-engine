@@ -1,4 +1,5 @@
 #pragma once
+#include "pch.h"
 #include "core.h"
 #include "log.h"
 #include "../window/windows/windowsWindow.h"
@@ -10,17 +11,17 @@ namespace tze
 	class TZE_API app
 	{
 	public:
-		windowsWindow* mainWindow;
 
 		app();
 		virtual ~app();
 
 		void run();
-	private:
+
+		std::unique_ptr<windowsWindow> mainWindow;
 		GLFWwindow* window;
 
-		mainLyaer* majorLay;
-		imguiLayer* imguiLay;
+		std::unique_ptr<mainLyaer> majorLay;
+		std::unique_ptr<imguiLayer> imguiLay;
 	};
 
 	// this will be defiend in the client 
