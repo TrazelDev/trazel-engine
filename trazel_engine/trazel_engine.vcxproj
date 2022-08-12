@@ -162,7 +162,7 @@
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\device\swapchain.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\instance\instance.h" />
-    <ClInclude Include="src\layers\mainLayer\vulkan_setup\model\model.h" />
+    <ClInclude Include="src\layers\mainLayer\vulkan_utility\model\model.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.h" />
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.h" />
@@ -191,7 +191,7 @@
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\device\swapchain.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\frameBuffer\frameBuffer.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\instance\instance.cpp" />
-    <ClCompile Include="src\layers\mainLayer\vulkan_setup\model\model.cpp" />
+    <ClCompile Include="src\layers\mainLayer\vulkan_utility\model\model.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\synchronization\sync.cpp" />
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\vulkan_logging\vulkan_logging.cpp" />

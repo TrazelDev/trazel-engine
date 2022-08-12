@@ -27,6 +27,7 @@ public:
 		thisWindowPros->title = title;
 		return thisWindowPros;
 	}
+	
 
 	// functions for rezing 
 	bool wasWindowResized() { return frameBufferResized; };

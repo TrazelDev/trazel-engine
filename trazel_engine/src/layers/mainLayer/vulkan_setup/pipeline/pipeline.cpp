@@ -1,14 +1,19 @@
 #include "pch.h"
 #include "pipeline.h"
-#include "../model/model.h"
+#include "../../vulkan_utility/model/model.h"
 
 vk::PipelineLayout vkInit::make_pipeline_layout(vk::Device& device)
 {
+	vk::PushConstantRange pushConstantRange = {};
+	pushConstantRange.stageFlags = vk::ShaderStageFlagBits::eVertex | vk::ShaderStageFlagBits::eFragment;
+	pushConstantRange.offset = 0;
+	pushConstantRange.size = sizeof(simplePushConstantData);
+	
 	vk::PipelineLayoutCreateInfo layoutInfo;
 	layoutInfo.flags = vk::PipelineLayoutCreateFlags();
 	layoutInfo.setLayoutCount = 0;
-	layoutInfo.pushConstantRangeCount = 0;
-
+	layoutInfo.pushConstantRangeCount = 1;
+	layoutInfo.pPushConstantRanges = &pushConstantRange;
 	try
 	{
 		return device.createPipelineLayout(layoutInfo);
@@ -119,11 +124,10 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 	vk::PipelineViewportStateCreateInfo viewportState = {};
 	viewportState.flags = vk::PipelineViewportStateCreateFlags();
 	viewportState.viewportCount = 1;
-	viewportState.pViewports = &viewport;
+	viewportState.pViewports = nullptr;
 	viewportState.scissorCount = 1;
-	viewportState.pScissors = &scissor;
+	viewportState.pScissors = nullptr;
 
-	//pipelineInfo.pDynamicState = &viewportState;
 	pipelineInfo.pViewportState = &viewportState;
 
 	// resterizer:
@@ -178,6 +182,17 @@ vkInit::graphicsPiplineOutBundle vkInit::make_graphics_pipeline(vkInit::graphics
 	colorBlending.blendConstants[3] = 0.0f;
 
 	pipelineInfo.pColorBlendState = &colorBlending;
+
+	vk::DynamicState dynamicStates[] =
+	{
+		vk::DynamicState::eViewport,
+		vk::DynamicState::eScissor
+	};
+	vk::PipelineDynamicStateCreateInfo dynamicStateCreateInfo;
+	dynamicStateCreateInfo.sType = vk::StructureType::ePipelineDynamicStateCreateInfo;
+	dynamicStateCreateInfo.pDynamicStates = dynamicStates;
+	dynamicStateCreateInfo.dynamicStateCount = /*sizeof(dynamicStates)*/ 2;
+	pipelineInfo.pDynamicState = &dynamicStateCreateInfo;
 
 	// pipeline layout:
 	#ifdef DEBUG_MODE

@@ -15,9 +15,9 @@ namespace tze
 	mainLyaer::~mainLyaer()
 	{
 		device.waitIdle();
-
-
 		model.reset();
+
+
 		device.destroyCommandPool(commandPool);
 
 		device.destroyPipeline(pipeline);
@@ -36,6 +36,8 @@ namespace tze
 		device.destroySwapchainKHR();
 		device.destroyDescriptorPool();
 		device.destroy();
+
+
 		instance.destroySurfaceKHR(surface);
 
 #ifndef Client_MODE
@@ -92,7 +94,7 @@ namespace tze
 		graphicsQueue = queues[0];
 		presentQueue = queues[1];
 
-		bundle = vkInit::create_swapchain(device, physicalDevice, surface, width, height);
+		bundle = vkInit::create_swapchain(device, physicalDevice, surface, *width, *height);
 		swapchain = new vk::SwapchainKHR(bundle.swapchain);
 		swapchainFrames = bundle.frames;
 		swapchainFormat = bundle.format;
@@ -144,6 +146,9 @@ namespace tze
 
 	void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex)
 	{
+		static int frame = 0;
+		frame = (frame + 1) % 10000;
+
 		vk::CommandBufferBeginInfo beginInfo = {};
 		try
 		{
@@ -163,14 +168,48 @@ namespace tze
 		renderpassInfo.renderArea.offset.y = 0;
 		renderpassInfo.renderArea.extent = swapchainExtent;
 
-		vk::ClearValue clearColor = { std::array<float, 4> {1.0f, 1.0f, 1.0f, 1.0f} };
+		vk::ClearValue clearColor = { std::array<float, 4> {0.1f, 0.1f, 0.1f, 1.0f} };
 		renderpassInfo.clearValueCount = 1;
 		renderpassInfo.pClearValues = &clearColor;
 
 		commandBuffer.beginRenderPass(&renderpassInfo, vk::SubpassContents::eInline);
+
+
+		// viewport and scissor:
+		VkViewport viewport = {};
+		viewport.x = 0.0f;
+		viewport.y = 0.0f;
+		viewport.width = *width;
+		viewport.height = *height;
+		viewport.minDepth = 0.0f;
+		viewport.maxDepth = 1.0f;
+		VkRect2D scissor{ {0, 0}, {*width, *height} };
+
+		vkCmdSetViewport(commandBuffer, 0, 1, &viewport);
+		vkCmdSetScissor(commandBuffer, 0, 1, &scissor);
+
+
 		commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline);
 		model->bind(commandBuffer);
-		model->draw(commandBuffer);
+
+		for (int j = 0; j < 1; j++)
+		{
+			vkInit::simplePushConstantData push;
+			push.offset = { -0.5f + frame * 0.0001, 0 };
+			push.color = { 0.0f, 0.0f, 0.2f + 0.2f * j };
+
+			vkCmdPushConstants
+			(
+				commandBuffer, 
+				layout, 
+				VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 
+				0, 
+				sizeof(vkInit::simplePushConstantData), 
+				&push
+			);
+			model->draw(commandBuffer);
+		}
+
 		commandBuffer.endRenderPass();
 
 		try
@@ -237,7 +276,7 @@ namespace tze
 
 		////////////////////////
 		// uint32_t frameNum32_t = frameNum;
-		// result = vkAcquireNextImageKHR
+		// VkResult result1 = vkAcquireNextImageKHR
 		// (
 		// 	device,
 		// 	*swapchain,
@@ -246,7 +285,7 @@ namespace tze
 		// 	swapchainFrames[frameNum].inFlight,
 		// 	&frameNum32_t
 		// );
-		// if (result == VK_ERROR_OUT_OF_DATE_KHR)
+		// if (result1 == VK_ERROR_OUT_OF_DATE_KHR)
 		// {
 		// 	recreate_swapchain();
 		// }
@@ -261,6 +300,8 @@ namespace tze
 		frameNum = (frameNum + 1) % maxFramesInFlight;
 		result = presentQueue.presentKHR(presentInfo);
 
+		//const auto a = VkPresentInfoKHR(presentInfo);
+		//result1 = vkQueuePresentKHR(presentQueue, &a);
 	}
 
 
@@ -322,42 +363,47 @@ namespace tze
 	{
 		std::vector<vkUtil::model::vertex> vertices
 		{
-			{{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
-			{{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
-			{{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
+			// {{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
+			// {{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
+			// {{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
+			{{0.5f, -0.5f }},
+			{{0.0f, 0.5f  }},
+			{{-0.5f, -0.5f}}
+
 		};
 
-		make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0 }, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
-
-		vertices.push_back({ {0.0f, 1.0f   } ,{0.0, 0.5, 1.0} });
-		vertices.push_back({ {-1.0f, 1.0f  } ,{0.5, 0.0, 1.0} });
-		vertices.push_back({ {-1.0f, -1.0f } ,{0.0, 0.0, 1.0} });
-		make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
-
-		vertices.push_back({ {1.0f, 1.0f } ,{0.0, 1.0, 1.0} });
-		vertices.push_back({ {0.0f, 1.0f } ,{1.0, 1.0, 0.0} });
-		vertices.push_back({ {1.0f, -1.0f} ,{0.0, 1.0, 0.0} });
-		make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
-
+		// make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0 }, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
+		// 
+		// vertices.push_back({ {0.0f, 1.0f   } ,{0.0, 0.5, 1.0} });
+		// vertices.push_back({ {-1.0f, 1.0f  } ,{0.5, 0.0, 1.0} });
+		// vertices.push_back({ {-1.0f, -1.0f } ,{0.0, 0.0, 1.0} });
+		// make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
+		// 
+		// vertices.push_back({ {1.0f, 1.0f } ,{0.0, 1.0, 1.0} });
+		// vertices.push_back({ {0.0f, 1.0f } ,{1.0, 1.0, 0.0} });
+		// vertices.push_back({ {1.0f, -1.0f} ,{0.0, 1.0, 0.0} });
+		// make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
+		// 
 		model = std::unique_ptr<vkUtil::model>(new vkUtil::model{ physicalDevice, device, vertices });
 	}
 
 	void mainLyaer::recreate_swapchain()
 	{
-		//VkExtent2D extent = getExtent();
 		while (width == 0 || height == 0)
 		{
 			glfwWaitEvents();
 		}
 
 		vkDeviceWaitIdle(device);
-		bundle = vkInit::create_swapchain(device, physicalDevice, surface, width, height , swapchain);
+		bundle = vkInit::create_swapchain(device, physicalDevice, surface, *width, *height , swapchain);
 		swapchain = new vk::SwapchainKHR(bundle.swapchain);
 		swapchainFrames = bundle.frames;
 		swapchainFormat = bundle.format;
 		swapchainExtent = bundle.extent;
 
-		makePipeline();
+		//makePipeline();
+
+		device.destroyCommandPool(commandPool);
 		finalSetup();
 	}
 }

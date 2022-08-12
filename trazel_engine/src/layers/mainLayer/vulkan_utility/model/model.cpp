@@ -1,10 +1,10 @@
 #include "pch.h"
 #include "model.h"
-#include "../frameBuffer/frameBuffer.h"
+#include "../../vulkan_setup/frameBuffer/frameBuffer.h"
 
 namespace vkUtil
 {
-	model::model(vk::PhysicalDevice& PhysicalDevice, vk::Device& Device, const std::vector<vertex>& vertices) : physicalDevice(PhysicalDevice), device(Device)
+	model::model(vk::PhysicalDevice& PhysicalDevice, vk::Device& Device, std::vector<vertex>& vertices) : physicalDevice(PhysicalDevice), device(Device)
 	{
 		createVertexBuffer(vertices);
 	}

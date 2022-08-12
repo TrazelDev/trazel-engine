@@ -1,18 +1,18 @@
 #pragma once
 #include "../layer.h"
 #include "vulkan_setup/device/swapchain.h"
-#include "vulkan_setup/model/model.h"
+#include "vulkan_utility/model/model.h"
 
 namespace tze
 {
 	class mainLyaer : layer
 	{
 	public:
-		mainLyaer(GLFWwindow* Window, const char* Title, uint32_t Width, uint32_t Height, const std::unique_ptr<windowsWindow>& MainWindow)
+		mainLyaer(GLFWwindow* Window, const char* Title, uint32_t* Width, uint32_t* Height, const std::unique_ptr<windowsWindow>& MainWindow)
 		{
 			window = Window;
 			title = Title;
-			width = width;
+			width = Width;
 			height = Height;
 			mainWindow = MainWindow.get();
 		}

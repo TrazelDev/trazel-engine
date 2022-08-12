@@ -9,8 +9,8 @@ public:
 	{
 		window = Window;
 		title = Title;
-		width = width;
-		height = Height;
+		width = &Width;
+		height = &Height;
 	}
 	~imguiLayer()
 	{

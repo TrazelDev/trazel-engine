@@ -15,7 +15,7 @@ namespace vkUtil
 			static std::vector<VkVertexInputAttributeDescription> getAttributeDescriptions();
 		};
 
-		model(vk::PhysicalDevice& PhysicalDevice, vk::Device& Device, const std::vector<vertex>& vertices);
+		model(vk::PhysicalDevice& PhysicalDevice, vk::Device& Device, std::vector<vertex>& vertices);
 		~model();
 
 		model(const model&) = delete;

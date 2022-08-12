@@ -108,7 +108,7 @@
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\instance\instance.h">
       <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
     </ClInclude>
-    <ClInclude Include="src\layers\mainLayer\vulkan_setup\model\model.h">
+    <ClInclude Include="src\layers\mainLayer\vulkan_utility\model\model.h">
       <Filter>layers\mainLayer\vulkan_setup\model</Filter>
     </ClInclude>
     <ClInclude Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.h">
@@ -187,7 +187,7 @@
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\instance\instance.cpp">
       <Filter>layers\mainLayer\vulkan_setup\instance</Filter>
     </ClCompile>
-    <ClCompile Include="src\layers\mainLayer\vulkan_setup\model\model.cpp">
+    <ClCompile Include="src\layers\mainLayer\vulkan_utility\model\model.cpp">
       <Filter>layers\mainLayer\vulkan_setup\model</Filter>
     </ClCompile>
     <ClCompile Include="src\layers\mainLayer\vulkan_setup\pipeline\pipeline.cpp">

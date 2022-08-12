@@ -4,6 +4,12 @@
 
 namespace vkInit
 {
+	struct simplePushConstantData
+	{
+		glm::vec2 offset;
+		alignas(16) glm::vec3 color;
+	};
+
 	struct graphicsPiplineInBundle
 	{
 		vk::Device device;
