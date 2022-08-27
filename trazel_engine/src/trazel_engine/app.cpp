@@ -25,6 +25,7 @@ namespace tze {
 		TZE_CLIENT_INFO("the app was successfully closed");
 	}
 
+
 	void app::run()
 	{
 		while (!glfwWindowShouldClose(window))
@@ -33,6 +34,7 @@ namespace tze {
 			majorLay->onUpdate();
 			//imguiLay->onUpdate();
 		}
+
 		TZE_CLIENT_INFO("the window was closed successfully");
 	}
 }

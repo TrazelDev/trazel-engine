@@ -2,6 +2,7 @@
 #include "../layer.h"
 #include "vulkan_setup/device/swapchain.h"
 #include "vulkan_utility/model/model.h"
+#include "gameObject/gameObject.h"
 
 namespace tze
 {
@@ -64,7 +65,8 @@ namespace tze
 		int maxFramesInFlight, frameNum;
 
 		// model realted variables:
-		std::unique_ptr<vkUtil::model> model;
+		//std::unique_ptr<vkUtil::model> model;
+		std::vector<gameObject> gameObjects;
 
 		// getting results:
 		vk::Result result;
@@ -78,22 +80,21 @@ namespace tze
 		// pipeline setup:
 		void makePipeline();
 
-		// model loading:
-		void loadModel();
+		// loading game object:
+		//void loadModel();
+		void loadGameObj();
 
-		void finalSetup();
+		void makeCommands();
 
+		void createSemaphoresAndfence();
 
 		void recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex);
 
+		void renderGameObj(vk::CommandBuffer commandBuffer);
 		void render();
 		void calculateFrameRate();
 
 		// resizing window:
-		void recreateSwapchain();
-		void recordCommandBuffer(int imageIndex);
-
-		void recreate_swapchain(vk::Device& logicalDevice, vk::PhysicalDevice& physicalDevice, vk::SurfaceKHR& surface, uint32_t& width, uint32_t& height);
 		void recreate_swapchain();
 	};
 }

@@ -155,6 +155,8 @@
     <ClInclude Include="src\window\windows\windowsWindow.h">
       <Filter>window\windows</Filter>
     </ClInclude>
+    <ClInclude Include="src\layers\mainLayer\gameObject\gameObject.h" />
+    <ClInclude Include="src\layers\mainLayer\renderer\render.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\eventSystem\keyboard.cpp">
@@ -224,5 +226,7 @@
     <ClCompile Include="src\window\windows\windowsWindow.cpp">
       <Filter>window\windows</Filter>
     </ClCompile>
+    <ClCompile Include="src\layers\mainLayer\gameObject\gameObject.cpp" />
+    <ClCompile Include="src\layers\mainLayer\renderer\render.cpp" />
   </ItemGroup>
 </Project>

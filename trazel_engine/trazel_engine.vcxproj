@@ -151,6 +151,8 @@
     </PostBuildEvent>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="src\layers\mainLayer\renderer\render.h" />
+    <ClInclude Include="src\layers\mainLayer\gameObject\gameObject.h" />
     <ClInclude Include="src\eventSystem\keyboard.h" />
     <ClInclude Include="src\eventSystem\mouse.h" />
     <ClInclude Include="src\layers\imguiLayer\imguiLayer.h" />
@@ -181,6 +183,8 @@
     <ClInclude Include="src\window\windows\windowsWindow.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="src\layers\mainLayer\renderer\render.cpp" />
+    <ClCompile Include="src\layers\mainLayer\gameObject\gameObject.cpp" />
     <ClCompile Include="src\eventSystem\keyboard.cpp" />
     <ClCompile Include="src\eventSystem\mouse.cpp" />
     <ClCompile Include="src\layers\imguiLayer\imguiLayer.cpp" />

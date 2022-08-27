@@ -10,8 +10,8 @@ namespace vkUtil
 	}
 	model::~model()
 	{
-		vkDestroyBuffer(device, vertexBuffer, nullptr);
-		vkFreeMemory(device, vertexBufferMemory, nullptr);
+		//vkDestroyBuffer(device, vertexBuffer, nullptr);
+		//vkFreeMemory(device, vertexBufferMemory, nullptr);
 	}
 
 

@@ -21,6 +21,7 @@ namespace tze
 		GLFWwindow* window;
 
 		std::unique_ptr<mainLyaer> majorLay;
+		std::unique_ptr<mainLyaer> majorLay1;
 		std::unique_ptr<imguiLayer> imguiLay;
 	};
 

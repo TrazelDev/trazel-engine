@@ -15,7 +15,7 @@ namespace tze
 	mainLyaer::~mainLyaer()
 	{
 		device.waitIdle();
-		model.reset();
+		//model.reset();
 
 
 		device.destroyCommandPool(commandPool);
@@ -53,9 +53,11 @@ namespace tze
 	{
 		makeInstance();
 		makeDevice();
-		loadModel();
+		loadGameObj();
+		//loadModel();
 		makePipeline();
-		finalSetup();
+		makeCommands();
+		createSemaphoresAndfence();
 	}
 
 
@@ -121,7 +123,7 @@ namespace tze
 	}
 
 
-	void mainLyaer::finalSetup()
+	void mainLyaer::makeCommands()
 	{
 		vkInit::frameBufferInput frameBufferInput;
 		frameBufferInput.device = device;
@@ -135,6 +137,11 @@ namespace tze
 		commandBuffer = vkInit::make_command_buffers(commandBufferInput);
 
 		//vkInit::createDescriptorPool(device, descriptorPool);
+	}
+
+
+	void mainLyaer::createSemaphoresAndfence()
+	{
 		for (vkUtil::SwapchainFrame& frame : swapchainFrames)
 		{
 			frame.inFlight = vkInit::make_fence(device);
@@ -146,9 +153,6 @@ namespace tze
 
 	void mainLyaer::recordDrawCommands(vk::CommandBuffer commandBuffer, uint32_t imageIndex)
 	{
-		static int frame = 0;
-		frame = (frame + 1) % 10000;
-
 		vk::CommandBufferBeginInfo beginInfo = {};
 		try
 		{
@@ -190,25 +194,7 @@ namespace tze
 
 
 		commandBuffer.bindPipeline(vk::PipelineBindPoint::eGraphics, pipeline);
-		model->bind(commandBuffer);
-
-		for (int j = 0; j < 1; j++)
-		{
-			vkInit::simplePushConstantData push;
-			push.offset = { -0.5f + frame * 0.0001, 0 };
-			push.color = { 0.0f, 0.0f, 0.2f + 0.2f * j };
-
-			vkCmdPushConstants
-			(
-				commandBuffer, 
-				layout, 
-				VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT, 
-				0, 
-				sizeof(vkInit::simplePushConstantData), 
-				&push
-			);
-			model->draw(commandBuffer);
-		}
+		renderGameObj(commandBuffer);
 
 		commandBuffer.endRenderPass();
 
@@ -359,6 +345,78 @@ namespace tze
 		}
 	}
 
+	void mainLyaer::recreate_swapchain()
+	{
+		while (width == 0 || height == 0)
+		{
+			glfwWaitEvents();
+		}
+
+		vkDeviceWaitIdle(device);
+		bundle = vkInit::create_swapchain(device, physicalDevice, surface, *width, *height , swapchain);
+		swapchain = new vk::SwapchainKHR(bundle.swapchain);
+		swapchainFrames = bundle.frames;
+		swapchainFormat = bundle.format;
+		swapchainExtent = bundle.extent;
+
+		//makePipeline();
+		device.destroyCommandPool(commandPool);
+		makeCommands();
+		createSemaphoresAndfence();
+	}
+
+
+	void mainLyaer::loadGameObj()
+	{
+		std::vector<vkUtil::model::vertex> vertices
+		{
+			{{0.5f, -0.5f }},
+			{{0.0f, 0.5f  }},
+			{{-0.5f, -0.5f}}
+		};
+
+		std::shared_ptr<vkUtil::model> model = std::make_shared<vkUtil::model>(physicalDevice, device, vertices);
+
+		auto triangle = gameObject::createGameObj();
+		triangle.model = model;
+		triangle.color = { 0.8f, 0.0f, 0.1f };
+		triangle.transform2d.translation.x = 0.2f;
+		triangle.transform2d.translation.y = 0.0f;
+		triangle.transform2d.scale = { 2.0f, 0.5f };
+		triangle.transform2d.rotation = -0.25f * glm::two_pi<float>();
+
+		gameObjects.push_back(std::move(triangle));
+	}
+
+
+	void mainLyaer::renderGameObj(vk::CommandBuffer commandBuffer)
+	{
+		for (auto& obj : gameObjects)
+		{
+			obj.transform2d.rotation = glm::mod(obj.transform2d.rotation + 0.0005f, glm::two_pi<float>());
+
+			vkInit::simplePushConstantData push;
+			push.offset = obj.transform2d.translation;
+			push.color = { 0.0f, 0.0f, 0.2f + 0.2f };
+			push.transform = obj.transform2d.mat2();
+
+			vkCmdPushConstants
+			(
+				commandBuffer,
+				layout,
+				VK_SHADER_STAGE_VERTEX_BIT | VK_SHADER_STAGE_FRAGMENT_BIT,
+				0,
+				sizeof(vkInit::simplePushConstantData),
+				&push
+			);
+
+			obj.model->bind(commandBuffer);
+			obj.model->draw(commandBuffer);
+		}
+	}
+
+
+	/*
 	void mainLyaer::loadModel()
 	{
 		std::vector<vkUtil::model::vertex> vertices
@@ -386,24 +444,5 @@ namespace tze
 		// 
 		model = std::unique_ptr<vkUtil::model>(new vkUtil::model{ physicalDevice, device, vertices });
 	}
-
-	void mainLyaer::recreate_swapchain()
-	{
-		while (width == 0 || height == 0)
-		{
-			glfwWaitEvents();
-		}
-
-		vkDeviceWaitIdle(device);
-		bundle = vkInit::create_swapchain(device, physicalDevice, surface, *width, *height , swapchain);
-		swapchain = new vk::SwapchainKHR(bundle.swapchain);
-		swapchainFrames = bundle.frames;
-		swapchainFormat = bundle.format;
-		swapchainExtent = bundle.extent;
-
-		//makePipeline();
-
-		device.destroyCommandPool(commandPool);
-		finalSetup();
-	}
+	*/
 }
