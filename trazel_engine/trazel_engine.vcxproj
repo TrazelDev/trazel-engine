@@ -90,7 +90,7 @@
       <SubSystem>Windows</SubSystem>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <ImportLibrary>..\bin\Debug-windows-x86_64\trazel_engine\trazel_engine.lib</ImportLibrary>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\glfw\lib-vc2022\glfw3.lib;C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\Lib\vulkan-1.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);3d_party_extentions\glfw\lib-vc2022\glfw3.lib;3d_party_extentions\vulkan_sdk\Lib\vulkan-1.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Debug-windows-x86_64\trazel_engine\trazel_engine.dll\ (xcopy /Q /E /Y /I ..\bin\Debug-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Debug-windows-x86_64\client &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Debug-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Debug-windows-x86_64\client &gt; nul)</Command>
@@ -117,7 +117,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>..\bin\Release-windows-x86_64\trazel_engine\trazel_engine.lib</ImportLibrary>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\glfw\lib-vc2022\glfw3.lib;C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\Lib\vulkan-1.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);3d_party_extentions\glfw\lib-vc2022\glfw3.lib;3d_party_extentions\vulkan_sdk\Lib\vulkan-1.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Release-windows-x86_64\trazel_engine\trazel_engine.dll\ (xcopy /Q /E /Y /I ..\bin\Release-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Release-windows-x86_64\client &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Release-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Release-windows-x86_64\client &gt; nul)</Command>
@@ -144,7 +144,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <ImportLibrary>..\bin\Client-windows-x86_64\trazel_engine\trazel_engine.lib</ImportLibrary>
-      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\glfw\lib-vc2022\glfw3.lib;C:\Dev_programmer\vulkan_try\vulkan_try\thirdParty\Lib\vulkan-1.lib</AdditionalDependencies>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;comdlg32.lib;advapi32.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;odbc32.lib;odbccp32.lib;%(AdditionalDependencies);3d_party_extentions\glfw\lib-vc2022\glfw3.lib;3d_party_extentions\vulkan_sdk\Lib\vulkan-1.lib</AdditionalDependencies>
     </Link>
     <PostBuildEvent>
       <Command>IF EXIST ..\bin\Client-windows-x86_64\trazel_engine\trazel_engine.dll\ (xcopy /Q /E /Y /I ..\bin\Client-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Client-windows-x86_64\client &gt; nul) ELSE (xcopy /Q /Y /I ..\bin\Client-windows-x86_64\trazel_engine\trazel_engine.dll ..\bin\Client-windows-x86_64\client &gt; nul)</Command>
