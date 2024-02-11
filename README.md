@@ -3,7 +3,7 @@ Simple 2D game engine developed by TrazelDev
 
 > [!Note]
 > This project is an old version of TZE_2.0 and supports some of its features. Here is a link to the updated project:
-> [TZE_2.0](https://openai.com "Visit TZE_2.0, the updated project")
+> [TZE_2.0](https://github.com/TrazelDev/TZE_2.0 "Visit TZE_2.0, the updated project")
 
 ## Running and building:
 1. Clone the project.
