@@ -36,6 +36,7 @@
 #define GLM_FORCE_DEPTH_ZERO_TO_ONE
 #include <glm-master/glm/glm.hpp>
 #include <glm-master/glm/gtc/constants.hpp>
+#include <glm-master/glm/gtc/matrix_transform.hpp>
 
 #ifdef TZE_PLATFORM_WINDOWS
 	#define _WIN32_WINNT 0x0601

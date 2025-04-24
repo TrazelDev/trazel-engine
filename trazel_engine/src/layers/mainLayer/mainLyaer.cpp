@@ -317,7 +317,7 @@ namespace tze
 		numFrames++;
 	}
 
-
+	/*
 	void make
 	(
 		std::vector<vkUtil::model::vertex>& vertices,
@@ -344,6 +344,7 @@ namespace tze
 			make(vertices, depth - 1, leftTop, rightTop, top, colorLeft, colroRight, colorTop);
 		}
 	}
+	*/
 
 	void mainLyaer::recreate_swapchain()
 	{
@@ -365,27 +366,74 @@ namespace tze
 		createSemaphoresAndfence();
 	}
 
-
-	void mainLyaer::loadGameObj()
+	std::unique_ptr<vkUtil::model> createCubeModel(vk::PhysicalDevice& physicalDevice, vk::Device& device, glm::vec3 offset)
 	{
 		std::vector<vkUtil::model::vertex> vertices
 		{
-			{{0.5f, -0.5f }},
-			{{0.0f, 0.5f  }},
-			{{-0.5f, -0.5f}}
+			// left face (white)
+			{{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+			{{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+			{{-.5f, -.5f, .5f}, {.9f, .9f, .9f}},
+			{{-.5f, -.5f, -.5f}, {.9f, .9f, .9f}},
+			{{-.5f, .5f, -.5f}, {.9f, .9f, .9f}},
+			{{-.5f, .5f, .5f}, {.9f, .9f, .9f}},
+
+			// right face (yellow)
+			{{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+			{{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+			{{.5f, -.5f, .5f}, {.8f, .8f, .1f}},
+			{{.5f, -.5f, -.5f}, {.8f, .8f, .1f}},
+			{{.5f, .5f, -.5f}, {.8f, .8f, .1f}},
+			{{.5f, .5f, .5f}, {.8f, .8f, .1f}},
+
+			// top face (orange, remember y axis points down)
+			{{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+			{{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+			{{-.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+			{{-.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+			{{.5f, -.5f, -.5f}, {.9f, .6f, .1f}},
+			{{.5f, -.5f, .5f}, {.9f, .6f, .1f}},
+
+			// bottom face (red)
+			{{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+			{{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+			{{-.5f, .5f, .5f}, {.8f, .1f, .1f}},
+			{{-.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+			{{.5f, .5f, -.5f}, {.8f, .1f, .1f}},
+			{{.5f, .5f, .5f}, {.8f, .1f, .1f}},
+
+			// nose face (blue)
+			{{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+			{{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+			{{-.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+			{{-.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+			{{.5f, -.5f, 0.5f}, {.1f, .1f, .8f}},
+			{{.5f, .5f, 0.5f}, {.1f, .1f, .8f}},
+
+			// tail face (green)
+			{{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+			{{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+			{{-.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+			{{-.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+			{{.5f, -.5f, -0.5f}, {.1f, .8f, .1f}},
+			{{.5f, .5f, -0.5f}, {.1f, .8f, .1f}},
+
 		};
+		for (auto& v : vertices) {
+			v.position += offset;
+		}
+		return std::make_unique<vkUtil::model>(physicalDevice, device, vertices);
+	}
 
-		std::shared_ptr<vkUtil::model> model = std::make_shared<vkUtil::model>(physicalDevice, device, vertices);
+	void mainLyaer::loadGameObj()
+	{
+		std::shared_ptr<vkUtil::model> model = createCubeModel(physicalDevice ,device, { 0.0f, 0.0f, 0.0f });
 
-		auto triangle = gameObject::createGameObj();
-		triangle.model = model;
-		triangle.color = { 0.8f, 0.0f, 0.1f };
-		triangle.transform2d.translation.x = 0.2f;
-		triangle.transform2d.translation.y = 0.0f;
-		triangle.transform2d.scale = { 2.0f, 0.5f };
-		triangle.transform2d.rotation = -0.25f * glm::two_pi<float>();
-
-		gameObjects.push_back(std::move(triangle));
+		auto cube = gameObject::createGameObj();
+		cube.model = model;
+		cube.transform.translation = { 0.0f, 0.0f, 0.5f };
+		cube.transform.scale = { 0.5f, 0.5f, 0.5f };
+		gameObjects.push_back(std::move(cube));
 	}
 
 
@@ -393,12 +441,12 @@ namespace tze
 	{
 		for (auto& obj : gameObjects)
 		{
-			obj.transform2d.rotation = glm::mod(obj.transform2d.rotation + 0.0005f, glm::two_pi<float>());
+			//obj.transform.rotation.y = glm::mod(obj.transform.rotation.y - 0.0001f, glm::two_pi<float>());
+			obj.transform.rotation.x = glm::mod(obj.transform.rotation.x + 0.00005f, glm::two_pi<float>());
 
-			vkInit::simplePushConstantData push;
-			push.offset = obj.transform2d.translation;
-			push.color = { 0.0f, 0.0f, 0.2f + 0.2f };
-			push.transform = obj.transform2d.mat2();
+			vkInit::simplePushConstantData push{};
+			push.color = obj.color;
+			push.transform = obj.transform.mat4();
 
 			vkCmdPushConstants
 			(
@@ -415,34 +463,4 @@ namespace tze
 		}
 	}
 
-
-	/*
-	void mainLyaer::loadModel()
-	{
-		std::vector<vkUtil::model::vertex> vertices
-		{
-			// {{1.0f, -1.0f }, {1.0, 0.0, 0.5}},
-			// {{0.0f, 1.0f  }, {1.0, 0.5, 0.0}},
-			// {{-1.0f, -1.0f}, {1.0, 0.5, 0.5}}
-			{{0.5f, -0.5f }},
-			{{0.0f, 0.5f  }},
-			{{-0.5f, -0.5f}}
-
-		};
-
-		// make(vertices, 7, { -1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, -1.0f }, { 0.0, 0.5, 1.0 }, { 0.5, 0.0, 1.0 }, { 0.0, 0.0, 1.0 });
-		// 
-		// vertices.push_back({ {0.0f, 1.0f   } ,{0.0, 0.5, 1.0} });
-		// vertices.push_back({ {-1.0f, 1.0f  } ,{0.5, 0.0, 1.0} });
-		// vertices.push_back({ {-1.0f, -1.0f } ,{0.0, 0.0, 1.0} });
-		// make(vertices, 7, { -1.0f, -1.0f }, { -1.0f, 1.0f }, { 0.0f, 1.0f }, { 0.0, 1.0, 1.0 }, { 1.0, 1.0, 0.0 }, { 0.0, 1.0, 0.0 });
-		// 
-		// vertices.push_back({ {1.0f, 1.0f } ,{0.0, 1.0, 1.0} });
-		// vertices.push_back({ {0.0f, 1.0f } ,{1.0, 1.0, 0.0} });
-		// vertices.push_back({ {1.0f, -1.0f} ,{0.0, 1.0, 0.0} });
-		// make(vertices, 7, { 1.0f, -1.0f }, { 0.0f, 1.0f }, { 1.0f, 1.0f }, { 1.0, 0.5, 0.5 }, { 1.0, 0.5, 0.0 }, { 1.0, 0.0, 0.5 });
-		// 
-		model = std::unique_ptr<vkUtil::model>(new vkUtil::model{ physicalDevice, device, vertices });
-	}
-	*/
 }
